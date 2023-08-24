@@ -1,18 +1,24 @@
-import Indicators from "../Indicators";
+import { Suspense } from 'react';
+// import { createContext } from "react";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import MainPage from "../MainPage";
 import Map from "../Map";
 import History from "../History";
 import Events from "../Events";
 import Documents from "../Documents";
-import { createContext } from "react";
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import Indicators from '../Indicators';
 
 function App() {
-    const AppContext = createContext(null);
+  
+  
+    // const AppContext = createContext(null);
     return (
-        <AppContext.Provider>
+      <Suspense>
+        {/* <AppContext.Provider> */}
     <Router>
       <Routes>
-        <Route path="/" element= {<Indicators />} ></Route>
+        <Route path="/" element= {<MainPage/>}></Route>
+        <Route path="/indicators" element= {<Indicators/>}></Route>
         <Route path="/map" element={<Map/>}></Route>
         <Route path="/history" element={<History/>}></Route>
         <Route path="/events" element={<Events/>}></Route>
@@ -22,7 +28,8 @@ function App() {
         <Route path="*" element={<NotFound/>}></Route>  */}
       </Routes>
     </Router>
-    </AppContext.Provider> 
+    {/* </AppContext.Provider>  */}
+      </Suspense>
     );
 }
 

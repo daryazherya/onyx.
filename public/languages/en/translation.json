@@ -1,0 +1,17 @@
+{
+    "navPanel" : {
+        "indicatorsTitle" : "Indicators",
+        "mapTitle" : "Map",
+        "historyTitle" : "History",
+        "eventsTitle" : "Events",
+        "documentsTitle" : "Documents",
+        "settingsTitle" : "Settings",
+        "dataBaseTitle" : "Data base"
+    },
+
+     "header" : {
+        "button": "Change language",
+        "about application" : "About application"
+     }
+   
+}

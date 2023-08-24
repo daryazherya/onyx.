@@ -1,0 +1,16 @@
+{
+    "navPanel" : {
+        "indicatorsTitle" : "Показания",
+        "mapTitle" : "Карта",
+        "historyTitle" : "История",
+        "eventsTitle" : "События",
+        "documentsTitle" : "Документы",
+        "settingsTitle" : "Настройки",
+        "dataBaseTitle" : "База данных"
+    },
+
+    "header" : {
+        "button": "Выбрать язык",
+        "about application" : "О программе"
+     }
+ }
