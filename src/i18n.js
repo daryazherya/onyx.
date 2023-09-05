@@ -11,10 +11,9 @@ i18n
   .init({
     debug: true,
     fallbackLng: 'ru',
-    supportedLngs: [ 'ru' , 'en']
-  ,
-  backend: {
-    loadPath: '/languages/{{lng}}/translation.json'
+    supportedLngs: [ 'ru' , 'en'],
+    backend: {
+    loadPath: '/locales/{{lng}}/translation.json'
   }})
   
   export default i18n;

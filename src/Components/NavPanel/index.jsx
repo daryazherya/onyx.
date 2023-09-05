@@ -1,19 +1,24 @@
 import './index.scss';
-import { useState } from 'react';
+// import { useState } from 'react';
 import { Resizable } from 're-resizable';
-import PanelWithText from './PanelWithText';
+import PanelWithList from './PanelWithList';
+import { useContext } from 'react';
+import { AppContext } from '../App';
 
 
 const NavPanel = () => {
-	const [width, setWidth] = useState(300);
+	const {width, setWidth} = useContext(AppContext);
 
     return ( 
 			<Resizable
-			size={{ width}}
+			maxWidth={250}
+			minWidth={80}
+			size={{width}}
 			onResizeStop={(e, direction, ref, d) => {
-				setWidth(width + d.width);}}
+					setWidth(width + d.width);
+				}}
 				>
-				<PanelWithText/>
+			<PanelWithList width={width}/>
 			</Resizable>
      );
 

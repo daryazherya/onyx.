@@ -1,5 +1,4 @@
  $icons: 'indicators','map','history','events','documents','settings','dataBase';
- $widthLeftPanel : 330px;
  $widthButton: 30px;
 
 .leftPanel-direction {
@@ -7,7 +6,6 @@
     height: 100vh;
     font-size: medium;
     overflow: hidden;
-    max-width: $widthLeftPanel;
 }
 
 .leftPanel-list {
@@ -19,6 +17,13 @@
     padding: 15px 20px 15px 80px;
     color: #fff;
     
+}
+
+.leftPanel-list-item:hover {
+        background-color: rgb(106, 96, 133);
+        opacity: 0.8;
+        border-radius: 5px;
+        
 }
 
 @each $icon in $icons {
@@ -33,13 +38,17 @@
     }
 }
 
-.leftPanel-list-item:hover {
-        background-color: rgb(106, 96, 133);
-        opacity: 0.8;
-        border-radius: 5px;
-        
+
+.leftPanel-list-item-empty {
+    position: relative;
+    padding: 24.5px 20px 24px ;
 }
 
+.leftPanel-list-item-empty:hover{
+    background-color: rgb(106, 96, 133);
+    opacity: 0.8;
+    border-radius: 5px;
+}
 
 
 

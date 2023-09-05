@@ -7,17 +7,19 @@ import History from "../History";
 import Events from "../Events";
 import Documents from "../Documents";
 import Indicators from '../Indicators';
+import { useState } from 'react';
+import { createContext } from 'react';
 
+export const AppContext = createContext(null);
 function App() {
-  
-  
-    // const AppContext = createContext(null);
+  const [width, setWidth] = useState(250);
+
     return (
       <Suspense>
-        {/* <AppContext.Provider> */}
+        <AppContext.Provider value={{width, setWidth}}>
     <Router>
       <Routes>
-        <Route path="/" element= {<MainPage/>}></Route>
+        {/* <Route path="/" element= {<MainPage/>}></Route> */}
         <Route path="/indicators" element= {<Indicators/>}></Route>
         <Route path="/map" element={<Map/>}></Route>
         <Route path="/history" element={<History/>}></Route>
@@ -28,9 +30,9 @@ function App() {
         <Route path="*" element={<NotFound/>}></Route>  */}
       </Routes>
     </Router>
-    {/* </AppContext.Provider>  */}
+    </AppContext.Provider> 
       </Suspense>
     );
-}
 
+}
 export default App;
