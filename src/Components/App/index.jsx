@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
-// import { createContext } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import MainPage from "../MainPage";
+// import MainPage from "../MainPage";
 import Map from "../Map";
 import History from "../History";
 import Events from "../Events";

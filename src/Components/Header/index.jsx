@@ -32,7 +32,7 @@ const Header = () => {
                     <img className="header-logo-icon" src={logo} alt="logo"/>
                 </div>
                 <div className="header-settings">
-                    <Link to="">{t('header.about application')}</Link>
+                    <Link to="">{t('header.about')}</Link>
                     <input onClick={toggleLang} className= "header-settings-toggle" type="checkbox"></input>
                 </div>
             </div>

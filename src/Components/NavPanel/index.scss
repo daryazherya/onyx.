@@ -2,24 +2,27 @@
  $widthButton: 30px;
 
 .leftPanel-direction {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     background-image: linear-gradient(-20deg, #2b5876 0%, #4e4376 100%);
     height: 100vh;
     font-size: medium;
     overflow: hidden;
 }
 
-.leftPanel-list {
+.leftPanel-direction__list {
     padding-top: 25px;
 }
 
-.leftPanel-list-item {
+.leftPanel-list__item {
     position: relative;
     padding: 15px 20px 15px 80px;
     color: #fff;
     
 }
 
-.leftPanel-list-item:hover {
+.leftPanel-list__item:hover {
         background-color: rgb(106, 96, 133);
         opacity: 0.8;
         border-radius: 5px;
@@ -39,16 +42,21 @@
 }
 
 
-.leftPanel-list-item-empty {
+.leftPanel-list__item_empty {
     position: relative;
-    padding: 24.5px 20px 24px ;
+    padding: 24.4px 20px 24px ;
 }
 
-.leftPanel-list-item-empty:hover{
+.leftPanel-list__item_empty:hover{
     background-color: rgb(106, 96, 133);
     opacity: 0.8;
     border-radius: 5px;
 }
+
+.left-panel__button {
+    
+}
+
 
 
 

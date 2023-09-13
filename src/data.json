@@ -118,6 +118,126 @@
       "MeasureUnits": "мг/м3",
       "PDK": null,
       "PDKss": 0.00009999999747378752
+    },
+    {
+      "MeasurementChannelID": 0,
+      "Status": {
+        "ID": 1,
+        "Sign": "O",
+        "Description": "ОК",
+        "Good": true,
+        "Alertable": false,
+        "NoData": false
+      },
+      "FullDeviceID": 0,
+      "ChannelID": 7,
+      "HasData": true,
+      "Time": "2023-08-05T18:38:50",
+      "Value": 0.054643,
+      "Name": "Оксид азота",
+      "MeasureUnits": "мг/м3",
+      "PDK": 0.4000000059604645,
+      "PDKss": 0.05999999865889549
+    },
+    {
+      "MeasurementChannelID": 0,
+      "Status": {
+        "ID": 1,
+        "Sign": "O",
+        "Description": "ОК",
+        "Good": true,
+        "Alertable": false,
+        "NoData": false
+      },
+      "FullDeviceID": 0,
+      "ChannelID": 8,
+      "HasData": true,
+      "Time": "2023-08-05T18:38:50",
+      "Value": 0.069365,
+      "Name": "Диоксид азота",
+      "MeasureUnits": "мг/м3",
+      "PDK": 0.08500000089406967,
+      "PDKss": 0.03999999910593033
+    },
+    {
+      "MeasurementChannelID": 0,
+      "Status": {
+        "ID": 1,
+        "Sign": "O",
+        "Description": "ОК",
+        "Good": true,
+        "Alertable": false,
+        "NoData": false
+      },
+      "FullDeviceID": 0,
+      "ChannelID": 9,
+      "HasData": true,
+      "Time": "2023-08-05T18:38:50",
+      "Value": 1.973272,
+      "Name": "Оксид углерода",
+      "MeasureUnits": "мг/м3",
+      "PDK": 5,
+      "PDKss": 3
+    },
+    {
+      "MeasurementChannelID": 0,
+      "Status": {
+        "ID": 1,
+        "Sign": "O",
+        "Description": "ОК",
+        "Good": true,
+        "Alertable": false,
+        "NoData": false
+      },
+      "FullDeviceID": 0,
+      "ChannelID": 10,
+      "HasData": true,
+      "Time": "2023-08-05T18:38:50",
+      "Value": 0.050048,
+      "Name": "Диоксид серы",
+      "MeasureUnits": "мг/м3",
+      "PDK": 0.5,
+      "PDKss": 0.05000000074505806
+    },
+    {
+      "MeasurementChannelID": 0,
+      "Status": {
+        "ID": 1,
+        "Sign": "O",
+        "Description": "ОК",
+        "Good": true,
+        "Alertable": false,
+        "NoData": false
+      },
+      "FullDeviceID": 0,
+      "ChannelID": 11,
+      "HasData": true,
+      "Time": "2023-08-05T18:38:50",
+      "Value": 0.208588,
+      "Name": "Углеводороды",
+      "MeasureUnits": "мг/м3",
+      "PDK": 1,
+      "PDKss": null
+    },
+    {
+      "MeasurementChannelID": 0,
+      "Status": {
+        "ID": 1,
+        "Sign": "O",
+        "Description": "ОК",
+        "Good": true,
+        "Alertable": false,
+        "NoData": false
+      },
+      "FullDeviceID": 0,
+      "ChannelID": 12,
+      "HasData": true,
+      "Time": "2023-08-05T18:38:50",
+      "Value": 0,
+      "Name": "Бензапирен",
+      "MeasureUnits": "мг/м3",
+      "PDK": null,
+      "PDKss": 0.00009999999747378752
     }
   ]
 }

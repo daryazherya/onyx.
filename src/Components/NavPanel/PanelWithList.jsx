@@ -1,8 +1,12 @@
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import './index.scss';
+import RenderList from './RenderList';
+import RenderEmptyList from './RenderEmpyList';
+// import { useEffect, useState } from 'react';
 
-const PanelWithList = ({width }) => {
+const PanelWithList = ({ width}) => {
+    
+    
     const { t } = useTranslation();
     const listNames = [
         {indicators: t('navPanel.indicatorsTitle')},
@@ -14,29 +18,11 @@ const PanelWithList = ({width }) => {
         {dataBase: t('navPanel.dataBaseTitle')}
     ];
 
-    const renderList = (arr) => {
-        return arr.map((obj) => {
-            return Object.keys(obj).map((key) => {
-                    return <li key={key} className={`leftPanel-list-item icon-${key}`}>
-                        <Link to={`/${key}`} className="leftPanel-list-item-link">{`${obj[key]}`}</Link>
-                    </li>
-            })
-        })
-    }
-    const renderEmptyList = (arr) => {
-        return arr.map((obj) => {
-        return Object.keys(obj).map((key) => {
-                return <li key={key} className="leftPanel-list-item-empty">
-                    <Link to={`/${key}`} className={`icon-${key}`}></Link>
-                </li>
-        })
-    })
-}
-
     return ( <section  className="leftPanel-direction">
-            <ul className="leftPanel-list">
-                {width < 150 ? renderEmptyList(listNames): renderList(listNames)}
-            </ul>   
+            <ul className="leftPanel-direction__list" >
+                {width < 200 ? RenderEmptyList(listNames) : RenderList(listNames)}
+            </ul> 
+            <div className={"left-panel__button button-close"}>fkhkjv</div>  
             </section> );
 }
  

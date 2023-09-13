@@ -1,3 +1,187 @@
 .main {
     display: flex;
 }
+
+$iconTable: 'table';
+$iconCards: 'cards';
+$cards: 'date','name','value', 'units', 'status';
+
+    // Table start 
+
+.table {
+    position: relative;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    flex: 1 1 auto;
+}
+
+.table__button-switch{
+    align-self: flex-end;
+    margin-bottom: 25px;
+    margin-right: 20px;
+
+}
+@mixin table-button-switch {
+    font-size: 10px;
+    padding: 8px 25px;
+    border: 0.5px solid rgb(151, 151, 151);
+    background-color: rgb(228, 227, 232);
+    box-shadow: 0px 1px 6px rgb(74, 74, 74);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+@mixin table-button-switch-active {
+    background: #9f9f9f;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.8;
+}
+
+
+.table__button-switch_left {
+    @include table-button-switch;
+    border-radius: 20px 0px 0px 20px;
+    background-image: url('../../images/icons/#{$iconTable}.svg');
+}
+
+.left-active {
+    @include table-button-switch-active;
+    background-image: url('../../images/icons/#{$iconTable}.svg');
+}
+
+.table__button-switch_right {
+    @include table-button-switch;
+    border-radius: 0px 20px 20px 0px;
+    background-image: url('../../images/icons/#{$iconCards}.svg');
+    
+}
+
+.right-active {
+    @include table-button-switch-active;
+    background-image: url('../../images/icons/#{$iconCards}.svg');
+}
+
+
+.table-indicators {
+    border-bottom: 1px  solid rgb(173, 173, 173);
+    border-collapse: collapse;
+    border-spacing: 0px;  
+    margin: 0 15px;  
+}
+
+.table-indicators__table-head { 
+    th {
+        color:rgb(84, 84, 84);
+        font-weight: 700;
+        padding: 8px 20px;
+        background-color:  rgb(228, 227, 232); 
+        border-bottom: 1.5px solid rgb(202, 202, 202);
+    }
+        
+}
+
+.table-indicators__table-body {
+    td {
+        color:rgb(65, 65, 65);
+        text-align: center;
+        padding: 8px 20px;
+        border-bottom: 1px solid rgb(202, 202, 202);
+    }
+}
+.tableData-error {
+    font-size: larger;
+    font-weight: 900;
+    text-align: center;
+    line-height: 5;
+    height: 100px;
+    color: red;
+    background-color: rgb(246, 175, 174);
+    margin: 0 15px; 
+    opacity: 0.8;
+}
+
+    // Table end 
+
+    // Cards start
+
+    @each $card in $cards {
+        .card-indicator__#{$card} {
+            margin-bottom: 7px;
+        }
+    }
+
+.cards-wrapper {
+    margin-top: 20px;
+    padding: 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.card-indicator {
+    background-color: rgb(235, 235, 238);
+    color: rgb(57, 57, 57);
+    font-stretch:extra-condensed;
+    padding:  15px 20px;
+    margin: 5px;
+    border: 1px solid rgb(176, 176, 176);
+    border-radius: 10px;
+    box-shadow: 4px 6px 7px rgb(191, 191, 191);
+    text-align: center;
+}
+
+.card-indicator__date {
+    font-size: small;
+    font-weight: 500;
+
+}
+.card-indicator__name {
+    font-style: italic;
+    font-size: larger;
+    font-weight: 700;
+}
+.card-indicator__value {
+    font-style: oblique;
+    font-size: 23px;
+    font-weight: 900;
+    color:rgb(66, 103, 238)
+}
+
+// .card-indicator__units {
+
+// }
+// .card-indicator__status {
+
+// }
+.card-indicator__progress-bar-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    border-radius: 60px;
+    background-color: #a6a7a9;
+    box-shadow: 0px 0px 5px #111;
+    overflow: hidden;
+
+}
+
+.card-indicator__progress-bar {
+    width: 20%;
+    height: 15px;
+    background: linear-gradient(90deg,
+    #A1DA25 0%,
+    #DD481E 100%
+    );
+}
+
+.card-indicator__progress-bar::before {
+    font-size: small;
+    position: absolute;
+    content:'';
+    top: 0;
+    left: 50%;
+
+}

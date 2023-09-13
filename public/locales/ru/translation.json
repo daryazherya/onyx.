@@ -11,6 +11,6 @@
 
     "header" : {
         "button": "Выбрать язык",
-        "about application" : "О программе"
+        "about" : "О программе"
      }
  }
