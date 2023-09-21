@@ -4,10 +4,10 @@ const RenderDataTable = (data)=> {
         return  <tr key={indicator.ChannelID}>
             <td>{`${new Date(indicator.Time).toLocaleDateString()} ${new Date(indicator.Time).toLocaleTimeString()}`}</td>
             <td>{indicator.Name}</td>
-            <td>{Math.round(indicator.Value*1000)/1000}</td>
+            <td>{indicator.Value.toFixed(3)}</td>
             <td>{indicator.MeasureUnits}</td>
-            <td>{Math.round(indicator.PDK*1000)/1000}</td>
-            <td>{Math.round(indicator.PDKss*1000)/1000}</td>
+            <td>{indicator.PDK ? indicator.PDK.toFixed(3) : 'Не введена ПДК'}</td>
+            <td>{indicator.PDKss ? indicator.PDKss.toFixed(3) : 'Не введена ПДКcc'}</td>
             <td>{indicator.Status.Description}</td>
         </tr>
         

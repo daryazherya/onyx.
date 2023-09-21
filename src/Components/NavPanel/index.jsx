@@ -13,7 +13,6 @@ const NavPanel = () => {
 
     return ( 
 			<Resizable
-			
 			maxWidth={250}
 			minWidth={80}
 			size={{width}}
@@ -21,10 +20,10 @@ const NavPanel = () => {
 				handleMouseMove(e)
 				setWidth(mousePos.x);
 			}}
-				>
-			<PanelWithList width={width}/>
+			>
+			<PanelWithList width={width} setWidth={setWidth}/>
 			</Resizable>
-     );
+    );
 
 }
  

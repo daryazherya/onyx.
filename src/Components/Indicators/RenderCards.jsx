@@ -1,25 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const RenderDataCards = (data)=> {
-    // const [percents, setPercents] = useState(0);
+const RenderDataCards = ({data})=> {
+
 
     const calculatePercents  = (value, pdk) => {
-        if(!value || !pdk) {
-            return 'Не введена ПДК';
+        if(!value  || !pdk) {
+            return 'Нет ПДК';
+        }  else {
+            const result = value.toFixed(2) * 100/pdk.toFixed(2);
+             return `${result.toFixed(1)}%`;
         }
-       const result = (Math.round(value*100)/100) * 100 /(Math.round(pdk*100)/100);
-        return Math.round(result * 10)/10 + '%';
+    }
+
+    const setGraduent  = (value, pdk) => {
+        if(!value  || !pdk) {
+            return 0;
+        } else {
+            const result = value.toFixed(2) * 100/pdk.toFixed(2);
+             return result.toFixed();
+        }
     }
 
     return data.map(indicator => {
-        return <div className="card-indicator" key={indicator.ChannelID}>
-            <p className="card-indicator__date">{`${new Date(indicator.Time).toLocaleDateString()} ${new Date(indicator.Time).toLocaleTimeString()}`}</p>
-            <p className="card-indicator__name">{indicator.Name}</p>
-            <p className="card-indicator__value">{Math.round(indicator.Value*1000)/1000}</p>
-            <p className="card-indicator__units">{indicator.MeasureUnits}</p>
-            <p className="card-indicator__status">Статус прибора: {indicator.Status.Description}</p>
-            <div className="card-indicator__progress-bar-container">
-            <p className="card-indicator__progress-bar">{calculatePercents(indicator.Value,indicator.PDK)}</p>   
+        
+        return <div className="card__indicator" key={indicator.ChannelID}>
+            <div className="card__indicator__description">    
+                <p className="card__indicator__date">{`${new Date(indicator.Time).toLocaleDateString()} ${new Date(indicator.Time).toLocaleTimeString()}`}</p>
+                <p className="card__indicator__name">{indicator.Name}</p>
+                <p className="card__indicator__value">{indicator.Value.toFixed(3)}</p> 
+                <p className="card__indicator__units">{indicator.MeasureUnits}</p>
+                <p>Статус прибора:</p>
+                <p className="card__indicator__status">{indicator.Status.Description}</p>
+            </div>
+            <div className="card__indicator__calculator">
+                {calculatePercents(indicator.Value,indicator.PDK)}
+            </div>
+            <div className="card__indicator__progress-bar-container">
+                <p className="card__indicator__progress-bar" 
+                style ={{height: `${setGraduent(indicator.Value,indicator.PDK)}px`,
+                background: setGraduent(indicator.Value,indicator.PDK) < 50 ? 'linear-gradient(0deg ,#39d812 0%,#edc71f 100%)' :'linear-gradient(0deg ,#39d812 0%,#f0623b 100%)'}}>
+                </p>  
             </div>
         </div>       
     })

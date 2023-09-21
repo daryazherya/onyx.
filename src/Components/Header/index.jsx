@@ -17,10 +17,11 @@ const Header = () => {
             i18n.changeLanguage('en');
             localStorage.setItem('i18nextLng', JSON.stringify('en'))
         } else {
-            setLang(!lang);
+            setLang(!lang);    
             i18n.changeLanguage('ru');
             localStorage.setItem('i18nextLng', JSON.stringify('ru'))
         }
+        
     }
       
     

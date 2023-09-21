@@ -2,10 +2,11 @@ import { useTranslation } from 'react-i18next';
 import './index.scss';
 import RenderList from './RenderList';
 import RenderEmptyList from './RenderEmpyList';
-// import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
-const PanelWithList = ({ width}) => {
-    
+const PanelWithList = ({ width, setWidth}) => {
+    const [arrow, setArrow] = useState(true);
     
     const { t } = useTranslation();
     const listNames = [
@@ -22,7 +23,14 @@ const PanelWithList = ({ width}) => {
             <ul className="leftPanel-direction__list" >
                 {width < 200 ? RenderEmptyList(listNames) : RenderList(listNames)}
             </ul> 
-            <div className={"left-panel__button button-close"}>fkhkjv</div>  
+            <Link onClick={()=>{
+                if(!arrow) {
+                    setWidth(250);
+                } else {
+                    setWidth(80);
+                }
+                setArrow(!arrow);
+            }} className={ arrow && width > 80 ? "left-panel__button button-close" : "left-panel__button button-open"}></Link>  
             </section> );
 }
  

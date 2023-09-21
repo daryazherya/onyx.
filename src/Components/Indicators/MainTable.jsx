@@ -10,22 +10,21 @@ const MainTable = () => {
     const [data , setData] = useState(null);
     const [switchButton , setSwitchButton] = useState(true);
     const [progressBar ,setProgressBar]= useState(0);
-    // const [error , setError] = useState(null);
+    const [error , setError] = useState(false);
     
 
     useEffect(()=> {
         fetch('http://localhost:8000/data')
         .then((res) => {
             if(res.ok !== true){
+                setError(true);
                 throw Error('Ошибка! Нет данных.');
             }
-            // setError(null);
             return res.json();
         }).then((data)=>{
-            // console.log(data)
             setData(data);
         })
-    },[data])
+    },[])
 
     return ( 
         <div className="table">
@@ -46,11 +45,11 @@ const MainTable = () => {
                             {data && RenderDataTable(data)}
                         </tbody>
             </table>}
-           {!switchButton && <div className="cards-wrapper">{data && RenderDataCards(data)}</div>}
-            {/* {error && <div className ="tableData-error">{error}</div>} */}
+           {!switchButton && <div className="cards-wrapper">{data && <RenderDataCards data={data}/>}</div>}
+            {error && <div className ="tableData-error">Ошибка загрузки данных.</div>}
         </div>
         
-     );
+    );
 }
  
 export default MainTable;
