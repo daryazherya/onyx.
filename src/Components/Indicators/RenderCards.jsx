@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const RenderDataCards = ({ data }) => {
+const RenderDataCards = ({ data, t }) => {
     const calculatePercents = (value, pdk) => {
         if (!value || !pdk) {
             return "Нет ПДК";
@@ -37,7 +37,7 @@ const RenderDataCards = ({ data }) => {
                     <p className="card__indicator__units">
                         {indicator.MeasureUnits}
                     </p>
-                    <p>Статус прибора:</p>
+                    <p>{t("mainTable.tableTitles.status")}:</p>
                     <p className="card__indicator__status">
                         {indicator.Status.Description}
                     </p>

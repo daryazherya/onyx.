@@ -12,6 +12,22 @@
      "header" : {
         "button": "Change language",
         "about" : "About"
-     }
+     },
+     "mainTable" : {
+        "tableTitles": {
+            "time": "Time",
+            "parameter": "Parameter",
+            "value": "Value",
+            "measureUnits": "Measure Units",
+            "PDK": "PDK",
+            "PDKss": "PDKss",
+            "status": "Status"
+
+        }
+     },
+     "errors": {
+        "tableData" : "Error! Not found data.",
+        "channels" : "Error! Not found channels."
+    }
    
 }
