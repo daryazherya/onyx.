@@ -1,6 +1,8 @@
 import "./index.scss";
 import Header from "../Header";
 import NavPanel from "../NavPanel";
+import FormData from "./FormData";
+import RenderDataTable from "../Indicators/RenderTable";
 
 const History = () => {
     return (
@@ -8,7 +10,10 @@ const History = () => {
             <Header />
             <main className="main">
                 <NavPanel />
-                <p>История</p>
+                <div>
+                <FormData/>
+                {/* <RenderDataTable/> */}
+                </div>
             </main>
         </div>
     );

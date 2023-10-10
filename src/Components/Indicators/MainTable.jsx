@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "./index.scss";
-// import { Link } from 'react-router-dom';
 import TableTitles from "./tableTitles";
 import SwitchButton from "./TableButton";
 import RenderDataCards from "./RenderCards";
@@ -51,7 +50,6 @@ const MainTable = () => {
                 return res.json();
             })
             .then((data) => {
-                // console.log(data);
                 setData(data);
             });
     }, [data]);

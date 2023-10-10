@@ -2,8 +2,8 @@ import { useTranslation } from "react-i18next";
 import "./index.scss";
 import RenderList from "./RenderList";
 import RenderEmptyList from "./RenderEmpyList";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Button } from "@mui/material";
 
 const PanelWithList = ({ width, setWidth }) => {
     const [arrow, setArrow] = useState(true);
@@ -19,6 +19,10 @@ const PanelWithList = ({ width, setWidth }) => {
         { dataBase: t("navPanel.dataBaseTitle") },
     ];
 
+    const buttonText = {
+        close: 'скрыть панель',
+        open: '>>'};
+
     return (
         <section className="leftPanel-direction">
             <ul className="leftPanel-direction__list">
@@ -26,21 +30,17 @@ const PanelWithList = ({ width, setWidth }) => {
                     ? RenderEmptyList(listNames)
                     : RenderList(listNames)}
             </ul>
-            <Link
-                onClick={() => {
-                    if (!arrow) {
-                        setWidth(250);
-                    } else {
+            <Button sx={{margin: 1}} onClick={() => {
+                    if (arrow ) {
                         setWidth(80);
+                    } else{
+                        setWidth(250);
                     }
                     setArrow(!arrow);
-                }}
-                className={
-                    arrow && width > 80
-                        ? "left-panel__button button-close"
-                        : "left-panel__button button-open"
-                }
-            ></Link>
+                }}  variant="outlined"> 
+                { (arrow && width > 200) || (!arrow && width > 200) ? 
+                buttonText.close : buttonText.open }
+            </Button>
         </section>
     );
 };

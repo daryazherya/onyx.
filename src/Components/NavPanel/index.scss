@@ -65,19 +65,14 @@
 }
 
 .button-close {
-    background: url(../../images/icons/arrow-left.png) no-repeat;
-    background-size: contain;
+    display: none;
 }
 
 .button-open {
-    background: url(../../images/icons/arrow-right.png) no-repeat;
-    background-size: contain;
+    display: block;
 }
 
-.left-panel__button:hover {
-    right: 25px;
-    opacity: 0.2;
-}
+
 
 
 
