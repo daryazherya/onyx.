@@ -20,8 +20,9 @@ const PanelWithList = ({ width, setWidth }) => {
     ];
 
     const buttonText = {
-        close: 'скрыть панель',
-        open: '>>'};
+        close: "скрыть панель",
+        open: ">>",
+    };
 
     return (
         <section className="leftPanel-direction">
@@ -30,16 +31,21 @@ const PanelWithList = ({ width, setWidth }) => {
                     ? RenderEmptyList(listNames)
                     : RenderList(listNames)}
             </ul>
-            <Button sx={{margin: 1}} onClick={() => {
-                    if (arrow ) {
+            <Button
+                sx={{ margin: 1 }}
+                onClick={() => {
+                    if (arrow) {
                         setWidth(80);
-                    } else{
+                    } else {
                         setWidth(250);
                     }
                     setArrow(!arrow);
-                }}  variant="outlined"> 
-                { (arrow && width > 200) || (!arrow && width > 200) ? 
-                buttonText.close : buttonText.open }
+                }}
+                variant="outlined"
+            >
+                {(arrow && width > 200) || (!arrow && width > 200)
+                    ? buttonText.close
+                    : buttonText.open}
             </Button>
         </section>
     );

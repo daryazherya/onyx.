@@ -5,11 +5,13 @@ import SwitchButton from "./TableButton";
 import RenderDataCards from "./RenderCards";
 import SelectChannels from "./SelectChannels";
 import { useTranslation } from "react-i18next";
+import { useContext } from "react";
+import { AppContext } from "../App";
 
 const MainTable = () => {
+    const { channels, setChannels } = useContext(AppContext);
     const { t } = useTranslation();
     const [data, setData] = useState(null);
-    const [channels, setChannels] = useState(null);
     const [switchButton, setSwitchButton] = useState(true);
     const [error, setError] = useState(false);
     const [select, setSelect] = useState({
@@ -27,8 +29,8 @@ const MainTable = () => {
 
                 return res.json();
             })
-            .then((channels) => {
-                setChannels(channels);
+            .then((data) => {
+                setChannels(data);
             });
     }, []);
 
