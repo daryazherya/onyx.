@@ -22,9 +22,7 @@ $cards: 'date','name','value', 'units', 'status';
     justify-content: space-between;
     margin-bottom: 30px;
 }
-.table__select-channels {
 
-}
 
 @mixin table-button-switch {
     font-size: 10px;
@@ -101,7 +99,7 @@ $cards: 'date','name','value', 'units', 'status';
     height: 100px;
     color: red;
     background-color: rgb(246, 175, 174);
-    margin: 0 15px; 
+    border-radius: 0 0 5px 5px ;
     opacity: 0.8;
 }
 

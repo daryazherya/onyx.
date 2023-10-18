@@ -1,7 +1,7 @@
 import "./index.scss";
 import Header from "../Header";
 import NavPanel from "../NavPanel";
-import FormData from "./FormData";
+import Form from "./Form";
 
 const History = () => {
     return (
@@ -9,8 +9,8 @@ const History = () => {
             <Header />
             <main className="main">
                 <NavPanel />
-                <div>
-                    <FormData />
+                <div className="wrapper__form">
+                    <Form />
                 </div>
             </main>
         </div>

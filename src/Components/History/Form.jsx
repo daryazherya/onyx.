@@ -12,7 +12,7 @@ import { Radio, RadioGroup } from "@mui/material";
 import { useContext } from "react";
 import { AppContext } from "../App";
 import { useTranslation } from "react-i18next";
-import RenderDataTable from "../Indicators/RenderTable";
+import RenderFormTable from "./RenderFormTable";
 
 const FormData = () => {
     const { channels, setChannels } = useContext(AppContext);
@@ -47,7 +47,7 @@ const FormData = () => {
     const handleChange = (e) => {
         setValue(e.target.value);
         setFormData({ ...formData, PeriodType: e.target.value });
-        console.log(formData);
+        // console.log(formData);
     };
 
     const postFormData = () => {
@@ -79,7 +79,6 @@ const FormData = () => {
             >
                 {channels && <SelectChannels channels={channels} />}
             </select>
-
             <form className="form__history">
                 <LocalizationProvider
                     dateAdapter={AdapterDateFns}
@@ -105,7 +104,7 @@ const FormData = () => {
                                     ...formData,
                                     PeriodBegin: formatISO(newValueStart),
                                 });
-                                console.log(formData, newValueStart);
+                                // console.log(formData, newValueStart);
                             }}
                             disableFuture
                         />
@@ -125,7 +124,7 @@ const FormData = () => {
                                     ...formData,
                                     PeriodEnd: formatISO(newValueEnd),
                                 });
-                                console.log(formData, newValueEnd);
+                                // console.log(formData, newValueEnd);
                             }}
                             disableFuture
                         />
@@ -140,16 +139,18 @@ const FormData = () => {
                             sx={{
                                 "&.MuiFormGroup-root": {
                                     display: "block",
-                                },
+                                }
                             }}
                         >
                             <FormControlLabel
                                 sx={{
                                     "& .MuiTypography-root": {
                                         fontSize: "15px",
-                                    },
+                                    }
                                 }}
-                                control={<Radio value="20" />}
+                                control={<Radio value="20" sx={{"&.Mui-checked" : {
+                                    color: '#665995'
+                                }}}/>}
                                 label="Базовые 20 мин"
                             />
                             <FormControlLabel
@@ -158,7 +159,9 @@ const FormData = () => {
                                         fontSize: "15px",
                                     },
                                 }}
-                                control={<Radio value="H" />}
+                                control={<Radio value="H" sx={{"&.Mui-checked" : {
+                                    color: '#665995'
+                                }}}/>}
                                 label="Час"
                             />
                             <FormControlLabel
@@ -167,7 +170,9 @@ const FormData = () => {
                                         fontSize: "15px",
                                     },
                                 }}
-                                control={<Radio value="D" />}
+                                control={<Radio value="D" sx={{"&.Mui-checked" : {
+                                    color: '#665995'
+                                }}}/>}
                                 label="День"
                             />
                             <FormControlLabel
@@ -176,7 +181,9 @@ const FormData = () => {
                                         fontSize: "15px",
                                     },
                                 }}
-                                control={<Radio value="M" />}
+                                control={<Radio value="M" sx={{"&.Mui-checked" : {
+                                    color: '#665995'
+                                }}}/>}
                                 label="Месяц"
                             />
                         </RadioGroup>
@@ -188,6 +195,7 @@ const FormData = () => {
                             height: 40,
                             alignSelf: "center",
                             marginLeft: 2,
+                            backgroundColor: '#665995',
                         }}
                         variant="contained"
                     >
@@ -195,7 +203,7 @@ const FormData = () => {
                     </Button>
                 </LocalizationProvider>
             </form>
-            {/* <RenderDataTable /> */}
+            <RenderFormTable/>
         </>
     );
 };

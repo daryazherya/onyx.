@@ -1,23 +1,33 @@
 import RenderDataTable from "./RenderTable";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
 
 const TableTitles = ({ data, t }) => {
     return (
-        <table className="table-indicators">
-            <thead className="table-indicators__table-head">
-                <tr>
-                    <th>{t("mainTable.tableTitles.time")}</th>
-                    <th>{t("mainTable.tableTitles.parameter")}</th>
-                    <th>{t("mainTable.tableTitles.value")}</th>
-                    <th>{t("mainTable.tableTitles.measureUnits")}</th>
-                    <th>{t("mainTable.tableTitles.PDK")}</th>
-                    <th>{t("mainTable.tableTitles.PDKss")}</th>
-                    <th>{t("mainTable.tableTitles.status")}</th>
-                </tr>
-            </thead>
-            <tbody className="table-indicators__table-body">
+        <TableContainer component={Paper}>
+        <Table className="table-indicators">
+            <TableHead className="table-indicators__table-head">
+                <TableRow>
+                    <TableCell>{t("mainTable.tableTitles.time")}</TableCell>
+                    <TableCell>{t("mainTable.tableTitles.parameter")}</TableCell>
+                    <TableCell>{t("mainTable.tableTitles.value")}</TableCell>
+                    <TableCell>{t("mainTable.tableTitles.measureUnits")}</TableCell>
+                    <TableCell>{t("mainTable.tableTitles.PDK")}</TableCell>
+                    <TableCell>{t("mainTable.tableTitles.PDKss")}</TableCell>
+                    <TableCell>{t("mainTable.tableTitles.status")}</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody className="table-indicators__table-body">
                 {data && RenderDataTable(data)}
-            </tbody>
-        </table>
+            </TableBody>
+        </Table>
+        </TableContainer>
     );
 };
 export default TableTitles;
