@@ -6,6 +6,8 @@ import History from "../History";
 import Events from "../Events";
 import Documents from "../Documents";
 import Indicators from "../Indicators";
+import Settings from "../Settings/Settings";
+import Database from "../DataBase";
 import { useState } from "react";
 import { createContext } from "react";
 
@@ -14,11 +16,19 @@ export const AppContext = createContext(null);
 function App() {
     const [width, setWidth] = useState(250);
     const [channels, setChannels] = useState(null);
+    const [preloader, setPreloader] = useState(false);
 
     return (
         <Suspense>
             <AppContext.Provider
-                value={{ width, setWidth, channels, setChannels }}
+                value={{
+                    width,
+                    setWidth,
+                    channels,
+                    setChannels,
+                    preloader,
+                    setPreloader,
+                }}
             >
                 <Router>
                     <Routes>
@@ -34,9 +44,9 @@ function App() {
                             path="/documents"
                             element={<Documents />}
                         ></Route>
-                        {/* <Route path="/settings" element={<Settings/>}></Route>
-        <Route path="/database" element={<Database/>}></Route>
-        <Route path="*" element={<NotFound/>}></Route>  */}
+                        <Route path="/settings" element={<Settings />}></Route>
+                        <Route path="/database" element={<Database />}></Route>
+                        {/* <Route path="*" element={<NotFound/>}></Route>  */}
                     </Routes>
                 </Router>
             </AppContext.Provider>

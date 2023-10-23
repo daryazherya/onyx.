@@ -1,6 +1,7 @@
 import "./index.scss";
 import Header from "../Header";
 import NavPanel from "../NavPanel";
+import FormEvents from "./FormEvents";
 
 const Events = () => {
     return (
@@ -8,7 +9,9 @@ const Events = () => {
             <Header />
             <main className="main">
                 <NavPanel />
-                <p>События</p>
+                <div className="wrapper__form">
+                    <FormEvents />
+                </div>
             </main>
         </div>
     );

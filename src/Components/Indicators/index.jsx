@@ -1,7 +1,6 @@
 import Header from "../Header";
 import NavPanel from "../NavPanel";
 import "./index.scss";
-// import { useState } from "react";
 import MainTable from "./MainTable";
 import { useContext } from "react";
 import { AppContext } from "../App";
