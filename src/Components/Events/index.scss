@@ -2,3 +2,25 @@
     display: flex;
     margin: 15px;
 }
+
+.events-table__table-head { 
+    th {
+        color:rgb(84, 84, 84);
+        font-size: 15px;
+        font-weight: 700;
+        padding: 8px 10px;
+        background-color:  rgb(228, 227, 232); 
+        border-bottom: 1.5px solid rgb(202, 202, 202);
+    }
+        
+}
+
+.events-table__table-body {
+    td {
+        color:rgb(65, 65, 65);
+        text-align:start;
+        font-size: 15px;
+        padding: 8px 10px;
+        border-bottom: 1px solid rgb(202, 202, 202);
+    }
+}

@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 
-const FormButton = (postFormData, setPreloader) => {
+const FormButton = ({ postFormData, setPreloader }) => {
     return (
         <Button
             onClick={() => {

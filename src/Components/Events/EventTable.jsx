@@ -1,35 +1,48 @@
-import Box from "@mui/material/Box";
-import { DataGrid } from "@mui/x-data-grid";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import { Paper } from "@mui/material";
+import RenderTableTitles from "./RenderTableTitles";
+import RenderTableDataEvents from "./RenderTableDataEvents";
+import Preloader from "../Preloader/Preloader";
 
-const EventTable = ({ dataPeriodEvents }) => {
-    // console.log(dataPeriodEvents);
-    const columns = [
-        [
-            { field: "Источник" },
-            { field: "Описание" },
-            { field: "Статус" },
-            { field: "Время" },
-            { field: "Важное" },
-        ],
-    ];
-
+const EventTable = ({ dataPeriodEvents, preloader }) => {
     return (
-        <Box sx={{ height: 400, width: "100%" }}>
-            {dataPeriodEvents && (
-                <DataGrid
-                    rows={[]}
-                    columns={columns}
-                    initialState={{
-                        pagination: {
-                            paginationModel: {
-                                pageSize: 5,
-                            },
-                        },
-                    }}
-                    pageSizeOptions={[5]}
-                />
+        <>
+            {preloader && <Preloader />}
+            {!preloader && dataPeriodEvents && (
+                <Paper sx={{ width: "100%", overflow: "hidden" }}>
+                    <TableContainer sx={{ maxHeight: 550, padding: 0 }}>
+                        <Table className="events-table">
+                            <TableHead className="events-table__table-head">
+                                <TableRow>
+                                    <RenderTableTitles />
+                                </TableRow>
+                            </TableHead>
+                            <TableBody className="events-table__table-body">
+                                <RenderTableDataEvents
+                                    dataPeriodEvents={dataPeriodEvents}
+                                />
+                            </TableBody>
+                        </Table>
+                        {/* <TablePagination
+                    rowsPerPageOptions={[10, 15]}
+                    component="div"
+                    count={
+                        dataPeriodEvents &&
+                        dataPeriodEvents[0].Value.length
+                    }
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                /> */}
+                    </TableContainer>
+                </Paper>
             )}
-        </Box>
+        </>
     );
 };
 

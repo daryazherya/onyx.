@@ -10,7 +10,7 @@ import { AppContext } from "../App";
 
 const FormEvents = () => {
     const today = new Date();
-    const { setPreloader } = useContext(AppContext);
+    const { preloader, setPreloader } = useContext(AppContext);
     const [valueStartEvent, setValueStartEvent] = useState(new Date());
     const [valueEndEvent, setValueEndEvent] = useState(new Date());
     const [formDataEvent, setFormDataEvent] = useState({
@@ -19,25 +19,28 @@ const FormEvents = () => {
     });
     const [dataPeriodEvents, setDataPeriodEvents] = useState(null);
 
-    const postFormData = () => {
-        fetch("/api/measurements/GetAlertsForPeriod", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formDataEvent),
-        })
-            .then((res) => {
-                if (!res.ok) {
-                    throw Error("Нет данных за период");
+    async function postFormData() {
+        try {
+            const response = await fetch(
+                "/api/measurements/GetAlertsForPeriod",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(formDataEvent),
                 }
-                console.log(res);
-                return res.json();
-            })
-            .then((data) => {
-                console.log(data);
+            );
+            if (!response.ok) {
+                throw Error("Нет данных за период");
+            }
+            const data = await response.json();
+            setTimeout(() => {
                 setPreloader(false);
                 setDataPeriodEvents(data);
-            });
-    };
+            }, 1400);
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     return (
         <>
@@ -54,11 +57,16 @@ const FormEvents = () => {
                         valueEndEvent,
                         setValueEndEvent
                     )}
-
-                    {FormButton(postFormData, setPreloader)}
+                    <FormButton
+                        postFormData={postFormData}
+                        setPreloader={setPreloader}
+                    />
                 </LocalizationProvider>
             </form>
-            <EventTable dataPeriodEvents={dataPeriodEvents} />
+            <EventTable
+                dataPeriodEvents={dataPeriodEvents}
+                preloader={preloader}
+            />
         </>
     );
 };

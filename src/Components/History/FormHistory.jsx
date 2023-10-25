@@ -31,18 +31,22 @@ const FormHistory = () => {
     const [dataPeriodHistory, setDataPeriodHistory] = useState(null);
 
     useEffect(() => {
-        fetch("/api/measurements/getchannelsets")
-            .then((res) => {
-                if (!res.ok) {
+        async function res() {
+            try {
+                const response = await fetch(
+                    "/api/measurements/getchannelsets"
+                );
+                if (!response.ok) {
                     // setError(true);
                     throw Error(t("errors.channels"));
                 }
-
-                return res.json();
-            })
-            .then((data) => {
+                const data = await response.json();
                 setChannels(data);
-            });
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        res();
     }, []);
 
     const handleChange = (e) => {
@@ -50,22 +54,19 @@ const FormHistory = () => {
         setFormDataHistory({ ...formDataHistory, PeriodType: e.target.value });
     };
 
-    const postFormData = () => {
-        fetch("/api/measurements/GetDataForPeriod", {
+    async function postFormData() {
+        const response = await fetch("/api/measurements/GetDataForPeriod", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formDataHistory),
-        })
-            .then((res) => {
-                console.log(res);
-                return res.json();
-            })
-            .then((data) => {
-                console.log(data);
-                setPreloader(false);
-                setDataPeriodHistory(data);
-            });
-    };
+        });
+
+        const data = await response.json();
+        setTimeout(() => {
+            setPreloader(false);
+            setDataPeriodHistory(data);
+        }, 1400);
+    }
 
     return (
         <>
@@ -109,7 +110,10 @@ const FormHistory = () => {
                             <RadioBox />
                         </RadioGroup>
                     </fieldset>
-                    {FormButton(postFormData, setPreloader)}
+                    <FormButton
+                        postFormData={postFormData}
+                        setPreloader={setPreloader}
+                    />
                 </LocalizationProvider>
             </form>
             <RenderTableHistory

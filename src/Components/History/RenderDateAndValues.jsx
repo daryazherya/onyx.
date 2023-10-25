@@ -12,7 +12,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-const RenderDateAndTime = ({ data, page, rowsPerPage }) => {
+const RenderDateAndValues = ({ data, page, rowsPerPage }) => {
     return data.map((substance, i) =>
         (rowsPerPage > 0
             ? substance.Value.slice(
@@ -45,4 +45,4 @@ const RenderDateAndTime = ({ data, page, rowsPerPage }) => {
     );
 };
 
-export default RenderDateAndTime;
+export default RenderDateAndValues;
