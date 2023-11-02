@@ -6,13 +6,9 @@
         "eventsTitle" : "Events",
         "documentsTitle" : "Documents",
         "settingsTitle" : "Settings",
-        "dataBaseTitle" : "Data base"
-    },
-
-     "header" : {
-        "button": "Change language",
+        "dataBaseTitle" : "Data base",
         "about" : "About"
-     },
+    },
      "mainTable" : {
         "tableTitles": {
             "time": "Time",

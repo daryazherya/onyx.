@@ -11,6 +11,7 @@ import { useState } from "react";
 import Preloader from "../Preloader/Preloader";
 import RenderDateAndValues from "./RenderDateAndValues";
 
+
 const RenderTableHistory = ({ dataPeriodHistory, preloader }) => {
     // console.log(dataPeriodHistory);
     const [page, setPage] = useState(0);

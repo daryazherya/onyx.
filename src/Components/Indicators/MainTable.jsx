@@ -61,6 +61,7 @@ const MainTable = () => {
             <div className="table">
                 <div className="table__wrapper-settings">
                     <select
+                        className="table__select-channels"
                         onChange={(e) => {
                             setSelect({
                                 Id: e.target.value,
@@ -68,7 +69,6 @@ const MainTable = () => {
                                     .innerText,
                             });
                         }}
-                        className="table__select-channels"
                     >
                         {channels && <SelectChannels channels={channels} />}
                     </select>

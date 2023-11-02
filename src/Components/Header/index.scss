@@ -1,22 +1,21 @@
 .header {
     width: 100%;
     border-bottom: solid 1px rgb(195, 195, 195);
-    box-shadow: 10px 2px 7px rgb(191, 191, 191);
     background-color: rgb(228, 227, 232);
 }
 .header-title {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 }
 
 .header-logo-icon-container {
-    padding: 10px 0px 10px 60px;
+    padding: 10px;
 }
 
 .header-logo-icon {
-    height: 55px;
-    width: 145px;
+    height: 40px;
+    width: 140px;
 
 }
 

@@ -1,5 +1,7 @@
-const postFormData = (api, formData, setLoad, setPeriod) => {
-    fetch(api, {
+
+const PostForm = (api, formData) => {
+
+    return fetch(api, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -8,11 +10,7 @@ const postFormData = (api, formData, setLoad, setPeriod) => {
             // console.log(res);
             return res.json();
         })
-        .then((data) => {
-            // console.log(data);
-            setLoad(false);
-            setPeriod(data);
-        });
+        
 };
 
-export default postFormData;
+export default PostForm;

@@ -3,11 +3,10 @@ import { Resizable } from "re-resizable";
 import PanelWithList from "./PanelWithList";
 import { useContext, useState } from "react";
 import { AppContext } from "../App";
-
+import Header from "../Header";
 const NavPanel = () => {
     const { width, setWidth } = useContext(AppContext);
     const [mousePos, setMousePos] = useState({});
-
     const handleMouseMove = (event) => setMousePos({ x: event.clientX });
 
     return (
@@ -20,7 +19,8 @@ const NavPanel = () => {
                 setWidth(mousePos.x);
             }}
         >
-            <PanelWithList width={width} setWidth={setWidth} />
+            <Header/>
+            <PanelWithList width={width} setWidth={setWidth}/>
         </Resizable>
     );
 };

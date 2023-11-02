@@ -1,10 +1,10 @@
-import datePickers from "../History/DatePickers";
+import DatePickers from "../DatePickers/DatePickers";
 import { useContext, useState } from "react";
 import formatISO from "date-fns/formatISO";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import ru from "date-fns/locale/ru";
-import FormButton from "../History/FormButton";
+import FormButton from "../Buttons/FormButton";
 import EventTable from "./EventTable";
 import { AppContext } from "../App";
 
@@ -49,7 +49,7 @@ const FormEvents = () => {
                     dateAdapter={AdapterDateFns}
                     adapterLocale={ru}
                 >
-                    {datePickers(
+                    {DatePickers(
                         formDataEvent,
                         setFormDataEvent,
                         valueStartEvent,

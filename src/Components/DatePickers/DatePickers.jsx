@@ -12,16 +12,18 @@ const DatePickers = (
 ) => {
     return (
         <DemoContainer
-            sx={{ marginRight: 2 }}
+            sx={{ marginRight: 2}}
             components={["DatePicker", "DatePicker"]}
         >
             <DatePicker
                 sx={{
-                    width: 150,
+                    width: 130,
                     "& .MuiButtonBase-root ": {
                         marginRight: "5px",
-                        padding: 0,
                     },
+                    ".css-nxo287-MuiInputBase-input-MuiOutlinedInput-input" : {
+                        padding: 1.5,
+                    }
                 }}
                 label="Начало периода"
                 value={valueStart}
@@ -38,11 +40,14 @@ const DatePickers = (
             />
             <DatePicker
                 sx={{
-                    width: 150,
+                    width: 130,
                     "& .MuiButtonBase-root ": {
                         marginRight: "5px",
                         padding: 0,
                     },
+                    ".css-nxo287-MuiInputBase-input-MuiOutlinedInput-input" : {
+                        padding: 1.5,
+                    }
                 }}
                 label="Конец периода"
                 value={valueEnd}

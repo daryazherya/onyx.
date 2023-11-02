@@ -4,14 +4,19 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import ru from "date-fns/locale/ru";
 import { formatISO } from "date-fns";
 import SelectChannels from "../Indicators/SelectChannels";
-import FormButton from "./FormButton";
-import { RadioGroup } from "@mui/material";
+import FormButton from "../Buttons/FormButton";
 import { useContext } from "react";
 import { AppContext } from "../App";
 import { useTranslation } from "react-i18next";
 import RenderTableHistory from "./RenderTableHistory";
-import RadioBox from "./RadioBox";
-import DatePickers from "./DatePickers";
+import DatePickers from "../DatePickers/DatePickers";
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { MenuItem } from "@mui/material";
+import PostForm from '../api/PostForm';
+
+
 
 const FormHistory = () => {
     const today = new Date();
@@ -29,6 +34,7 @@ const FormHistory = () => {
         ChannelSetId: 1,
     });
     const [dataPeriodHistory, setDataPeriodHistory] = useState(null);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         async function res() {
@@ -37,7 +43,6 @@ const FormHistory = () => {
                     "/api/measurements/getchannelsets"
                 );
                 if (!response.ok) {
-                    // setError(true);
                     throw Error(t("errors.channels"));
                 }
                 const data = await response.json();
@@ -49,19 +54,14 @@ const FormHistory = () => {
         res();
     }, []);
 
-    const handleChange = (e) => {
-        setValueType(e.target.value);
-        setFormDataHistory({ ...formDataHistory, PeriodType: e.target.value });
+    const handleChange = (event) => {
+        setValueType(event.target.value);
+        setFormDataHistory({ ...formDataHistory, PeriodType: event.target.value });
     };
 
     async function postFormData() {
-        const response = await fetch("/api/measurements/GetDataForPeriod", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formDataHistory),
-        });
+        const data = await PostForm("/api/measurements/GetDataForPeriod",formDataHistory);
 
-        const data = await response.json();
         setTimeout(() => {
             setPreloader(false);
             setDataPeriodHistory(data);
@@ -70,17 +70,6 @@ const FormHistory = () => {
 
     return (
         <>
-            <select
-                className="form__select"
-                onChange={(e) => {
-                    setFormDataHistory({
-                        ...formDataHistory,
-                        ChannelSetId: parseInt(e.target.value),
-                    });
-                }}
-            >
-                {channels && <SelectChannels channels={channels} />}
-            </select>
             <form className="form__history">
                 <LocalizationProvider
                     dateAdapter={AdapterDateFns}
@@ -94,32 +83,51 @@ const FormHistory = () => {
                         valueEnd,
                         setValueEnd
                     )}
-                    <fieldset className="form__typeAverage">
-                        <legend className="form__typeAverage_description">
-                            Тип усреднений
-                        </legend>
-                        <RadioGroup
+                    <FormControl sx={{ m:1, minWidth: 120 , alignItems: "center", ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select" : {
+                        padding: 1.5,
+                    } }}>
+                        <InputLabel id="demo-simple-select-helper-label">Тип усреднений</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-helper-label"
+                            id="demo-simple-select-helper"
+                            label="Тип усреднений"
                             value={valueType}
                             onChange={handleChange}
-                            sx={{
-                                "&.MuiFormGroup-root": {
-                                    display: "block",
-                                },
-                            }}
                         >
-                            <RadioBox />
-                        </RadioGroup>
-                    </fieldset>
+            
+                            <MenuItem  value='20'>20-минутный</MenuItem>
+                            <MenuItem  value='H'>Часовой</MenuItem>
+                            <MenuItem  value='D'>Дневной</MenuItem>
+                            <MenuItem  value='M'>Месячный</MenuItem>
+                        </Select>
+                     </FormControl>
+                     <select
+                        className="form__select"
+                        onChange={(e) => {
+                            setFormDataHistory({
+                                ...formDataHistory,
+                                ChannelSetId: parseInt(e.target.value),
+                            });
+                        }}
+                    >
+                        {channels && <SelectChannels channels={channels} />}
+                    </select>
                     <FormButton
                         postFormData={postFormData}
                         setPreloader={setPreloader}
                     />
                 </LocalizationProvider>
             </form>
+            {error && (
+                    <div className="tableData-error">
+                        {t("errors.tableData")}
+                    </div>
+            )}
             <RenderTableHistory
                 dataPeriodHistory={dataPeriodHistory}
                 preloader={preloader}
             />
+
         </>
     );
 };

@@ -2,11 +2,12 @@ import { useTranslation } from "react-i18next";
 import "./index.scss";
 import RenderList from "./RenderList";
 import RenderEmptyList from "./RenderEmpyList";
-import { useState } from "react";
-import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
+import PanelButton from "../Buttons/PanelButton";
 
-const PanelWithList = ({ width, setWidth }) => {
-    const [arrow, setArrow] = useState(true);
+
+const PanelWithList = ({ width,setWidth}) => {
+
 
     const { t } = useTranslation();
     const listNames = [
@@ -17,12 +18,9 @@ const PanelWithList = ({ width, setWidth }) => {
         { documents: t("navPanel.documentsTitle") },
         { settings: t("navPanel.settingsTitle") },
         { dataBase: t("navPanel.dataBaseTitle") },
+        { about: t("navPanel.about") }
     ];
 
-    const buttonText = {
-        close: "скрыть панель",
-        open: ">>",
-    };
 
     return (
         <section className="leftPanel-direction">
@@ -31,22 +29,7 @@ const PanelWithList = ({ width, setWidth }) => {
                     ? RenderEmptyList(listNames)
                     : RenderList(listNames)}
             </ul>
-            <Button
-                sx={{ margin: 1 }}
-                onClick={() => {
-                    if (arrow) {
-                        setWidth(80);
-                    } else {
-                        setWidth(250);
-                    }
-                    setArrow(!arrow);
-                }}
-                variant="outlined"
-            >
-                {(arrow && width > 200) || (!arrow && width > 200)
-                    ? buttonText.close
-                    : buttonText.open}
-            </Button>
+            <PanelButton  width={width} setWidth={setWidth}/>
         </section>
     );
 };

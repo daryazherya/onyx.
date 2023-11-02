@@ -6,14 +6,9 @@
         "eventsTitle" : "События",
         "documentsTitle" : "Документы",
         "settingsTitle" : "Настройки",
-        "dataBaseTitle" : "База данных"
-    },
-
-    "header" : {
-        "button": "Выбрать язык",
+        "dataBaseTitle" : "База данных",
         "about" : "О программе"
-     }
-     ,
+    },
      "mainTable" : {
         "tableTitles": {
             "time": "Время",
