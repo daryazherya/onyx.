@@ -28,7 +28,11 @@ const RenderDateAndValues = ({ data, page, rowsPerPage }) => {
                         return (
                             <StyledTableRow>
                                 <TableCell key={obj.ChannelID}>
-                                    {obj[key]}
+                                    {`${new Date(
+                                        obj[key]
+                                    ).toLocaleDateString()} ${new Date(
+                                        obj[key]
+                                    ).toLocaleTimeString()}`}
                                 </TableCell>
                                 <RenderTableCell
                                     data={data}

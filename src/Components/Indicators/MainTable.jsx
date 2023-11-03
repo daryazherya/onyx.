@@ -7,9 +7,12 @@ import SelectChannels from "./SelectChannels";
 import { useTranslation } from "react-i18next";
 import { useContext } from "react";
 import { AppContext } from "../App";
+import Preloader from "../Preloader/Preloader";
+import { Select } from "@mui/material";
 
 const MainTable = () => {
-    const { channels, setChannels } = useContext(AppContext);
+    const { channels, setChannels, setPreloader, preloader } =
+        useContext(AppContext);
     const { t } = useTranslation();
     const [data, setData] = useState(null);
     const [switchButton, setSwitchButton] = useState(true);
@@ -18,6 +21,15 @@ const MainTable = () => {
         Id: 1,
         Name: "Пост Дарьи.Все каналы",
     });
+
+    const handleChange = (e) => {
+        setSelect({
+            Id: e.target.value,
+            Name: e.target.children[e.target.value - 1].innerText,
+        });
+        setPreloader(true);
+        getMeasures();
+    };
 
     useEffect(() => {
         fetch("/api/measurements/getchannelsets")
@@ -42,19 +54,27 @@ const MainTable = () => {
         });
     }, [select]);
 
-    useEffect(() => {
-        fetch("/api/measurements/getmeasurenow")
-            .then((res) => {
-                if (!res.ok) {
-                    setError(true);
-                    throw Error(t("errors.tableData"));
-                }
-                return res.json();
-            })
-            .then((data) => {
+    async function getMeasures() {
+        try {
+            setPreloader(true);
+            const response = await fetch("/api/measurements/getmeasurenow");
+            if (!response.ok) {
+                throw Error(t("errors.tableData"));
+            }
+            const data = await response.json();
+
+            setTimeout(() => {
+                setPreloader(false);
                 setData(data);
-            });
-    }, [data]);
+            }, 1400);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        getMeasures();
+    }, []);
 
     return (
         <>
@@ -62,25 +82,26 @@ const MainTable = () => {
                 <div className="table__wrapper-settings">
                     <select
                         className="table__select-channels"
-                        onChange={(e) => {
-                            setSelect({
-                                Id: e.target.value,
-                                Name: e.target.children[e.target.value - 1]
-                                    .innerText,
-                            });
-                        }}
+                        onChange={handleChange}
+                        value={select.Name}
                     >
                         {channels && <SelectChannels channels={channels} />}
                     </select>
                     <SwitchButton
                         switchButton={switchButton}
                         setSwitchButton={setSwitchButton}
+                        setPreloader={setPreloader}
                     />
                 </div>
-                {switchButton && <TableTitles data={data} t={t} />}
+                {preloader && <Preloader />}
+                {switchButton && !preloader && (
+                    <TableTitles data={data} t={t} />
+                )}
                 {!switchButton && (
                     <div className="cards-wrapper">
-                        {data && <RenderDataCards data={data} t={t} />}
+                        {data && !preloader && (
+                            <RenderDataCards data={data} t={t} />
+                        )}
                     </div>
                 )}
                 {error && (

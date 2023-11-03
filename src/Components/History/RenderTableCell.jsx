@@ -10,9 +10,9 @@ const RenderTableCell = ({ data, date, page, rowsPerPage }) => {
             : substance.Value
         ).map((obj) => {
             if (Object.values(obj).includes(date)) {
-                for (let keygen in obj) {
-                    if (keygen === "StrValue") {
-                        return <TableCell>{obj[keygen]}</TableCell>;
+                for (let key in obj) {
+                    if (key === "StrValue") {
+                        return <TableCell>{obj[key].slice(0, 5)}</TableCell>;
                     }
                 }
             }
