@@ -10,15 +10,38 @@ import Settings from "../Settings/Settings";
 import Database from "../DataBase";
 import { useState } from "react";
 import { createContext } from "react";
+import { createTheme , ThemeProvider} from "@mui/material";
+
+
 
 export const AppContext = createContext(null);
 
 function App() {
+    const theme = createTheme({
+        typography: {
+          fontFamily: [
+            'Manrope',
+            'Nunito Sans',
+            '-apple-system',
+            'BlinkMacSystemFont',
+            'Roboto',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+          ].join(','),
+        },
+      });
+
+
     const [width, setWidth] = useState(250);
     const [channels, setChannels] = useState(null);
     const [preloader, setPreloader] = useState(false);
 
     return (
+        <ThemeProvider theme={theme}>
         <Suspense>
             <AppContext.Provider
                 value={{
@@ -51,6 +74,7 @@ function App() {
                 </Router>
             </AppContext.Provider>
         </Suspense>
+        </ThemeProvider>
     );
 }
 export default App;

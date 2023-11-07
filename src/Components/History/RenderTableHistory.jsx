@@ -8,16 +8,14 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { TablePagination } from "@mui/material";
 import { useState } from "react";
-import Preloader from "../Preloader/Preloader";
 import RenderDateAndValues from "./RenderDateAndValues";
 
 
 const RenderTableHistory = ({ dataPeriodHistory, preloader }) => {
-    // console.log(dataPeriodHistory);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
-    const handleChangePage = (event, newPage) => {
+    const handleChangePage = (newPage) => {
         setPage(newPage);
     };
 
@@ -38,8 +36,6 @@ const RenderTableHistory = ({ dataPeriodHistory, preloader }) => {
             : 0;
 
     return (
-        <>
-            {preloader && <Preloader />}
             <Paper sx={{ width: "100%", overflow: "hidden" }}>
                 {!preloader && dataPeriodHistory && (
                     <TableContainer sx={{ maxHeight: 550, padding: 0 }}>
@@ -84,7 +80,6 @@ const RenderTableHistory = ({ dataPeriodHistory, preloader }) => {
                     </TableContainer>
                 )}
             </Paper>
-        </>
     );
 };
 

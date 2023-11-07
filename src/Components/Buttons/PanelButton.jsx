@@ -5,8 +5,8 @@ const PanelButton = ({width,setWidth}) => {
     const [arrow, setArrow] = useState(true);
 
     const buttonText = {
-        close: "<<",
-        open: ">>",
+        close: "<<<",
+        open: ">>>",
     };
 
     return  <Button

@@ -92,11 +92,13 @@ $cards: 'date','name','value', 'units', 'status';
     }
 }
 .tableData-error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: larger;
     font-weight: 900;
-    text-align: center;
     line-height: 5;
-    height: 100px;
+    height: 300px;
     color: red;
     background-color: rgb(246, 175, 174);
     border-radius: 0 0 5px 5px ;

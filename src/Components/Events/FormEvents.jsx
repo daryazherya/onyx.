@@ -7,10 +7,14 @@ import ru from "date-fns/locale/ru";
 import FormButton from "../Buttons/FormButton";
 import EventTable from "./EventTable";
 import { AppContext } from "../App";
+import PostData from "../api/PostData";
+import Preloader from "../Preloader/Preloader";
+import { useTranslation } from "react-i18next";
 
 const FormEvents = () => {
     const today = new Date();
     const { preloader, setPreloader } = useContext(AppContext);
+    const {t} = useTranslation();
     const [valueStartEvent, setValueStartEvent] = useState(new Date());
     const [valueEndEvent, setValueEndEvent] = useState(new Date());
     const [formDataEvent, setFormDataEvent] = useState({
@@ -18,18 +22,18 @@ const FormEvents = () => {
         PeriodEnd: formatISO(new Date()),
     });
     const [dataPeriodEvents, setDataPeriodEvents] = useState(null);
+    const [error, setError] = useState(false);
+
 
     async function postFormData() {
         try {
-            const response = await fetch(
-                "/api/measurements/GetAlertsForPeriod",
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(formDataEvent),
-                }
-            );
+            setPreloader(true)
+            const response = await PostData("/api/measurements/GetAlertsForPeriod",formDataEvent)
             if (!response.ok) {
+                setTimeout(() => {
+                    setPreloader(false);
+                    setError(true);
+                }, 1500);
                 throw Error("Нет данных за период");
             }
             const data = await response.json();
@@ -59,14 +63,17 @@ const FormEvents = () => {
                     )}
                     <FormButton
                         postFormData={postFormData}
-                        setPreloader={setPreloader}
                     />
                 </LocalizationProvider>
             </form>
-            <EventTable
-                dataPeriodEvents={dataPeriodEvents}
-                preloader={preloader}
-            />
+            {preloader && <Preloader/>}
+            {dataPeriodEvents && <EventTable
+                    dataPeriodEvents={dataPeriodEvents}
+                    preloader={preloader}
+            />}
+            {error && !preloader && (
+                <div className="tableData-error">{t("errors.tableData")}</div>
+            )}
         </>
     );
 };

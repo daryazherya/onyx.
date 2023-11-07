@@ -14,7 +14,8 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { MenuItem } from "@mui/material";
-import PostForm from "../api/postForm";
+import PostData from "../api/PostData";
+import Preloader from "../Preloader/Preloader";
 
 const FormHistory = () => {
     const today = new Date();
@@ -35,7 +36,7 @@ const FormHistory = () => {
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        async function res() {
+        async function getChannelSets() {
             try {
                 const response = await fetch(
                     "/api/measurements/getchannelsets"
@@ -49,7 +50,7 @@ const FormHistory = () => {
                 console.log(err);
             }
         }
-        res();
+        getChannelSets();
     }, []);
 
     const handleChange = (event) => {
@@ -61,15 +62,30 @@ const FormHistory = () => {
     };
 
     async function postFormData() {
-        const data = await PostForm(
-            "/api/measurements/GetDataForPeriod",
-            formDataHistory
-        );
+        try {
+            setPreloader(true);
+            const response = await PostData(
+                "/api/measurements/GetDataForPeriod",
+                formDataHistory
+            );
 
-        setTimeout(() => {
-            setPreloader(false);
-            setDataPeriodHistory(data);
-        }, 1400);
+            if (!response.ok) {
+                setTimeout(() => {
+                    setPreloader(false);
+                    setError(true);
+                }, 1500);
+                throw Error(t("errors.tableData"));
+            }
+            const data = await response.json();
+            console.log(data)
+
+            setTimeout(() => {
+                setPreloader(false);
+                setDataPeriodHistory(data);
+            }, 1500);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     return (
@@ -127,17 +143,17 @@ const FormHistory = () => {
                     </select>
                     <FormButton
                         postFormData={postFormData}
-                        setPreloader={setPreloader}
                     />
                 </LocalizationProvider>
             </form>
-            {error && (
-                <div className="tableData-error">{t("errors.tableData")}</div>
-            )}
-            <RenderTableHistory
+            {preloader && <Preloader/>}
+            {dataPeriodHistory && <RenderTableHistory
                 dataPeriodHistory={dataPeriodHistory}
                 preloader={preloader}
-            />
+                />}
+            {error && !preloader && (
+                <div className="tableData-error">{t("errors.tableData")}</div>
+            )}
         </>
     );
 };

@@ -5,10 +5,10 @@ const RenderList = (arr) => {
     return arr.map((obj) => {
         return Object.keys(obj).map((key) => {
             return (
-                <li key={key} className={`leftPanel-list__item icon-${key}`}>
+                <li key={key} className="leftPanel-list__item">
                     <Link
                         to={`/${key}`}
-                        className="leftPanel-list__item-link"
+                        className={`leftPanel-list__link icon-${key}`}
                     >{`${obj[key]}`}</Link>
                 </li>
             );

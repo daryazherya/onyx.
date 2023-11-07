@@ -8,8 +8,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 
-const TableTitles = ({ data, t }) => {
-    return (
+const TableTitles = ({ data, t, preloader }) => {
+    return !preloader && (
         <TableContainer component={Paper}>
         <Table className="table-indicators">
             <TableHead className="table-indicators__table-head">

@@ -1,13 +1,13 @@
 import "./index.scss";
 import { Link } from "react-router-dom";
 
-const SwitchButton = ({ switchButton, setSwitchButton, setPreloader }) => {
+const SwitchButton = ({ switchButton, setSwitchButton, setPreloader,getMeasures }) => {
     return (
         <div className="table__button-switch">
             <Link
                 onClick={() => {
                     setSwitchButton(true);
-                    setPreloader(true);
+                    getMeasures();
                 }}
                 to="/indicators"
                 className={
@@ -19,7 +19,7 @@ const SwitchButton = ({ switchButton, setSwitchButton, setPreloader }) => {
             <Link
                 onClick={() => {
                     setSwitchButton(false);
-                    setPreloader(true);
+                    getMeasures();
                 }}
                 to="/indicators"
                 className={

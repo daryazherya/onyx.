@@ -18,17 +18,20 @@
 }
 
 .leftPanel-list__item {
+    display: flex;
+    color: #fff; 
+}
+
+.leftPanel-list__link {
     position: relative;
-    padding: 15px 20px 15px 80px;
-    color: #fff;
-    
+    padding: 15px 10px 15px 80px;
+    width:100%;
 }
 
 .leftPanel-list__item:hover {
         background-color: rgb(106, 96, 133);
         opacity: 0.8;
-        border-radius: 5px;
-        
+        border-radius: 5px;   
 }
 
 @each $icon in $icons {
@@ -45,8 +48,13 @@
 
 
 .leftPanel-list__item_empty {
+    display: flex;
+}
+
+.leftPanel-list__link_empty {
     position: relative;
-    padding: 24.4px 20px 24px ;
+    padding: 25px 10px 23.4px 80px;
+    width:100%;
 }
 
 .leftPanel-list__item_empty:hover{
@@ -55,14 +63,6 @@
     border-radius: 5px;
 }
 
-.left-panel__button {
-    position: absolute;
-    bottom: 30px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    opacity: 0.5;   
-}
 
 .button-close {
     display: none;

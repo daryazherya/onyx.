@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
 
-const RenderDataCards = ({ data, t }) => {
+const RenderDataCards = ({ data, t, preloader }) => {
     const calculatePercents = (value, pdk) => {
         if (!value || !pdk) {
             return "Нет ПДК";
@@ -20,7 +19,7 @@ const RenderDataCards = ({ data, t }) => {
     };
 
     return data.map((indicator) => {
-        return (
+        return !preloader && (
             <div className="card__indicator" key={indicator.ChannelID}>
                 <div className="card__indicator__description">
                     <p className="card__indicator__date">{`${new Date(

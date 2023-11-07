@@ -5,7 +5,7 @@ const RenderEmptyList = (arr) => {
         return Object.keys(obj).map((key) => {
             return (
                 <li key={key} className="leftPanel-list__item_empty">
-                    <Link to={`/${key}`} className={`icon-${key}`}></Link>
+                    <Link to={`/${key}`} className={`leftPanel-list__link_empty icon-${key}`}></Link>
                 </li>
             );
         });

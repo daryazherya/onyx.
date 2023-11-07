@@ -6,13 +6,10 @@ import TableRow from "@mui/material/TableRow";
 import { Paper } from "@mui/material";
 import RenderTableTitles from "./RenderTableTitles";
 import RenderTableDataEvents from "./RenderTableDataEvents";
-import Preloader from "../Preloader/Preloader";
 
-const EventTable = ({ dataPeriodEvents, preloader }) => {
-    return (
-        <>
-            {preloader && <Preloader />}
-            {!preloader && dataPeriodEvents && (
+
+const EventTable = ({ dataPeriodEvents}) => {
+    return dataPeriodEvents && (
                 <Paper sx={{ width: "100%", overflow: "hidden" }}>
                     <TableContainer sx={{ maxHeight: 550, padding: 0 }}>
                         <Table className="events-table">
@@ -41,9 +38,7 @@ const EventTable = ({ dataPeriodEvents, preloader }) => {
                 /> */}
                     </TableContainer>
                 </Paper>
-            )}
-        </>
-    );
+    )
 };
 
 export default EventTable;

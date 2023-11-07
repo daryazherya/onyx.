@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
 import "./index.scss";
+import { useEffect, useState } from "react";
 import TableTitles from "./tableTitles";
-import SwitchButton from "./TableButton";
+import SwitchButton from "./SwitchButton";
 import RenderDataCards from "./RenderCards";
 import SelectChannels from "./SelectChannels";
 import { useTranslation } from "react-i18next";
 import { useContext } from "react";
 import { AppContext } from "../App";
 import Preloader from "../Preloader/Preloader";
-import { Select } from "@mui/material";
+// import { Select } from "@mui/material";
 
 const MainTable = () => {
     const { channels, setChannels, setPreloader, preloader } =
@@ -27,8 +27,8 @@ const MainTable = () => {
             Id: e.target.value,
             Name: e.target.children[e.target.value - 1].innerText,
         });
-        setPreloader(true);
-        getMeasures();
+        // setPreloader(true);
+        // getMeasures();
     };
 
     useEffect(() => {
@@ -38,7 +38,6 @@ const MainTable = () => {
                     setError(true);
                     throw Error(t("errors.channels"));
                 }
-
                 return res.json();
             })
             .then((data) => {
@@ -59,14 +58,18 @@ const MainTable = () => {
             setPreloader(true);
             const response = await fetch("/api/measurements/getmeasurenow");
             if (!response.ok) {
+                setTimeout(() => {
+                    setPreloader(false);
+                    setError(true);
+                }, 1500);
                 throw Error(t("errors.tableData"));
             }
             const data = await response.json();
 
             setTimeout(() => {
-                setPreloader(false);
                 setData(data);
-            }, 1400);
+                setPreloader(false);
+            }, 1500);
         } catch (err) {
             console.log(err);
         }
@@ -74,7 +77,7 @@ const MainTable = () => {
 
     useEffect(() => {
         getMeasures();
-    }, []);
+    },[]);
 
     return (
         <>
@@ -83,7 +86,6 @@ const MainTable = () => {
                     <select
                         className="table__select-channels"
                         onChange={handleChange}
-                        value={select.Name}
                     >
                         {channels && <SelectChannels channels={channels} />}
                     </select>
@@ -91,20 +93,21 @@ const MainTable = () => {
                         switchButton={switchButton}
                         setSwitchButton={setSwitchButton}
                         setPreloader={setPreloader}
+                        getMeasures={getMeasures}
                     />
                 </div>
                 {preloader && <Preloader />}
-                {switchButton && !preloader && (
-                    <TableTitles data={data} t={t} />
+                {switchButton && (
+                    <TableTitles data={data} t={t} preloader={preloader} />
                 )}
-                {!switchButton && (
+                {!switchButton &&(
                     <div className="cards-wrapper">
-                        {data && !preloader && (
-                            <RenderDataCards data={data} t={t} />
+                        {data && (
+                            <RenderDataCards data={data} t={t} preloader={preloader} />
                         )}
                     </div>
                 )}
-                {error && (
+                {error && !preloader && (
                     <div className="tableData-error">
                         {t("errors.tableData")}
                     </div>
