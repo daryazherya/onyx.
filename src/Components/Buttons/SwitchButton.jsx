@@ -1,7 +1,6 @@
-import "./index.scss";
 import { Link } from "react-router-dom";
 
-const SwitchButton = ({ switchButton, setSwitchButton, setPreloader,getMeasures }) => {
+const SwitchButton = ({ switchButton, setSwitchButton, getMeasures }) => {
     return (
         <div className="table__button-switch">
             <Link

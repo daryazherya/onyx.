@@ -10,12 +10,11 @@ import { TablePagination } from "@mui/material";
 import { useState } from "react";
 import RenderDateAndValues from "./RenderDateAndValues";
 
-
 const RenderTableHistory = ({ dataPeriodHistory, preloader }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
-    const handleChangePage = (newPage) => {
+    const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
 
@@ -36,50 +35,58 @@ const RenderTableHistory = ({ dataPeriodHistory, preloader }) => {
             : 0;
 
     return (
-            <Paper sx={{ width: "100%", overflow: "hidden" }}>
-                {!preloader && dataPeriodHistory && (
-                    <TableContainer sx={{ maxHeight: 550, padding: 0 }}>
-                        <Table className="history-table">
-                            <TableHead className="history-table__table-head">
-                                <TableRow>
-                                    <TableCell>Дата/время</TableCell>
-                                    <RenderTableTitles
-                                        data={dataPeriodHistory}
-                                        page={page}
-                                        rowsPerPage={rowsPerPage}
-                                    />
-                                </TableRow>
-                            </TableHead>
-                            <TableBody className="history-table__table-body">
-                                <RenderDateAndValues
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+            {!preloader && dataPeriodHistory && (
+                <TableContainer sx={{ maxHeight: 550, padding: 0 }}>
+                    <Table className="history-table">
+                        <TableHead className="history-table__table-head">
+                            <TableRow>
+                                <TableCell>Дата/время</TableCell>
+                                <RenderTableTitles
                                     data={dataPeriodHistory}
                                     page={page}
                                     rowsPerPage={rowsPerPage}
                                 />
-                                {emptyRows > 0 && (
-                                    <TableRow
-                                        style={{ height: 38 * emptyRows }}
-                                    >
-                                        <TableCell colSpan={6} />
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
-                        <TablePagination
-                            rowsPerPageOptions={[10, 15]}
-                            component="div"
-                            count={
-                                dataPeriodHistory &&
-                                dataPeriodHistory[0].Value.length
-                            }
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                        />
-                    </TableContainer>
-                )}
-            </Paper>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody className="history-table__table-body">
+                            <RenderDateAndValues
+                                data={dataPeriodHistory}
+                                page={page}
+                                rowsPerPage={rowsPerPage}
+                            />
+                            {emptyRows > 0 && (
+                                <TableRow style={{ height: 38 * emptyRows }}>
+                                    <TableCell colSpan={6} />
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                    <TablePagination
+                        rowsPerPageOptions={[10, 15]}
+                        labelRowsPerPage={"Количество строк"}
+                        labelDisplayedRows={function defaultLabelDisplayedRows({
+                            from,
+                            to,
+                            count,
+                        }) {
+                            return `${from}–${to} из ${
+                                count !== -1 ? count : `больше чем ${to}`
+                            }`;
+                        }}
+                        component="div"
+                        count={
+                            dataPeriodHistory &&
+                            dataPeriodHistory[0].Value.length
+                        }
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </TableContainer>
+            )}
+        </Paper>
     );
 };
 

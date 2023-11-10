@@ -3,7 +3,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import ru from "date-fns/locale/ru";
 import { formatISO } from "date-fns";
-import SelectChannels from "../Indicators/SelectChannels";
 import FormButton from "../Buttons/FormButton";
 import { useContext } from "react";
 import { AppContext } from "../App";
@@ -61,6 +60,13 @@ const FormHistory = () => {
         });
     };
 
+    const handleChangeChannel = (event) => {
+        setFormDataHistory({
+            ...formDataHistory,
+            ChannelSetId: event.target.value,
+        });
+    };
+
     async function postFormData() {
         try {
             setPreloader(true);
@@ -77,7 +83,7 @@ const FormHistory = () => {
                 throw Error(t("errors.tableData"));
             }
             const data = await response.json();
-            console.log(data)
+            // console.log(data);
 
             setTimeout(() => {
                 setPreloader(false);
@@ -105,24 +111,21 @@ const FormHistory = () => {
                     )}
                     <FormControl
                         sx={{
-                            m: 1,
-                            minWidth: 120,
-                            alignItems: "center",
-                            ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select":
-                                {
-                                    padding: 1.5,
-                                },
+                            minWidth: 150,
+                            marginRight: "15px",
                         }}
                     >
-                        <InputLabel id="demo-simple-select-helper-label">
-                            Тип усреднений
-                        </InputLabel>
+                        <InputLabel>Тип усреднений</InputLabel>
                         <Select
-                            labelId="demo-simple-select-helper-label"
-                            id="demo-simple-select-helper"
                             label="Тип усреднений"
                             value={valueType}
                             onChange={handleChange}
+                            sx={{
+                                ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
+                                    {
+                                        padding: 1.5,
+                                    },
+                            }}
                         >
                             <MenuItem value="20">20-минутный</MenuItem>
                             <MenuItem value="H">Часовой</MenuItem>
@@ -130,27 +133,46 @@ const FormHistory = () => {
                             <MenuItem value="M">Месячный</MenuItem>
                         </Select>
                     </FormControl>
-                    <select
-                        className="form__select"
-                        onChange={(e) => {
-                            setFormDataHistory({
-                                ...formDataHistory,
-                                ChannelSetId: parseInt(e.target.value),
-                            });
+                    <FormControl
+                        sx={{
+                            minWidth: 150,
                         }}
                     >
-                        {channels && <SelectChannels channels={channels} />}
-                    </select>
-                    <FormButton
-                        postFormData={postFormData}
-                    />
+                        <InputLabel>Представления</InputLabel>
+                        <Select
+                            label="Представления"
+                            className="form__select"
+                            onChange={handleChangeChannel}
+                            value={formDataHistory.ChannelSetId}
+                            sx={{
+                                ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
+                                    {
+                                        padding: 1.5,
+                                        paddingRight: "32px",
+                                    },
+                            }}
+                        >
+                            {channels &&
+                                channels.map((channel) => (
+                                    <MenuItem
+                                        key={channel.Id}
+                                        value={channel.Id}
+                                    >
+                                        {channel.Name}
+                                    </MenuItem>
+                                ))}
+                        </Select>
+                    </FormControl>
+                    <FormButton postFormData={postFormData} />
                 </LocalizationProvider>
             </form>
-            {preloader && <Preloader/>}
-            {dataPeriodHistory && <RenderTableHistory
-                dataPeriodHistory={dataPeriodHistory}
-                preloader={preloader}
-                />}
+            {preloader && <Preloader />}
+            {dataPeriodHistory && (
+                <RenderTableHistory
+                    dataPeriodHistory={dataPeriodHistory}
+                    preloader={preloader}
+                />
+            )}
             {error && !preloader && (
                 <div className="tableData-error">{t("errors.tableData")}</div>
             )}

@@ -10,9 +10,13 @@ const DatePickers = (
     valueEnd,
     setValueEnd
 ) => {
+    const checkDateEnd = () => {
+        return periodData.PeriodBegin === periodData.PeriodEnd;
+    };
+
     return (
         <DemoContainer
-            sx={{ marginRight: 2}}
+            sx={{ marginRight: 2 }}
             components={["DatePicker", "DatePicker"]}
         >
             <DatePicker
@@ -21,9 +25,9 @@ const DatePickers = (
                     "& .MuiButtonBase-root ": {
                         marginRight: "5px",
                     },
-                    ".css-nxo287-MuiInputBase-input-MuiOutlinedInput-input" : {
+                    ".css-nxo287-MuiInputBase-input-MuiOutlinedInput-input": {
                         padding: 1.5,
-                    }
+                    },
                 }}
                 label="Начало периода"
                 value={valueStart}
@@ -45,9 +49,9 @@ const DatePickers = (
                         marginRight: "5px",
                         padding: 0,
                     },
-                    ".css-nxo287-MuiInputBase-input-MuiOutlinedInput-input" : {
+                    ".css-nxo287-MuiInputBase-input-MuiOutlinedInput-input": {
                         padding: 1.5,
-                    }
+                    },
                 }}
                 label="Конец периода"
                 value={valueEnd}
