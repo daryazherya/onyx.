@@ -7,7 +7,7 @@ import ru from "date-fns/locale/ru";
 import FormButton from "../Buttons/FormButton";
 import EventTable from "./EventTable";
 import { AppContext } from "../App";
-import PostData from "../api/PostData";
+import PostData from "../fetch/PostData";
 import Preloader from "../Preloader/Preloader";
 import { useTranslation } from "react-i18next";
 

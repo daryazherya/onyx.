@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useContext } from "react";
 import { AppContext } from "../App";
 import Preloader from "../Preloader/Preloader";
-import PostData from "../api/PostData";
+import PostData from "../fetch/PostData";
 import { InputLabel, MenuItem, Select } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 

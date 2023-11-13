@@ -69,7 +69,7 @@ function App() {
                         ></Route>
                         <Route path="/settings" element={<Settings />}></Route>
                         <Route path="/database" element={<Database />}></Route>
-                        {/* <Route path="*" element={<NotFound/>}></Route>  */}
+                        {/* <Route path="/about" element={<NotFound/>}></Route>  */}
                     </Routes>
                 </Router>
             </AppContext.Provider>

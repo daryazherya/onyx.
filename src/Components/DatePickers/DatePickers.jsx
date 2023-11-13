@@ -1,6 +1,7 @@
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { formatISO } from "date-fns";
+import {  useMemo, useState } from "react";
 
 const DatePickers = (
     periodData,
@@ -10,10 +11,11 @@ const DatePickers = (
     valueEnd,
     setValueEnd
 ) => {
-    const checkDateEnd = () => {
-        return periodData.PeriodBegin === periodData.PeriodEnd;
-    };
 
+    const [errorDate, setErrorDate] = useState(null); 
+    const errorMessage = useMemo(() =>  errorDate === 'minDate' ? 'Выберите другую дату': '', [errorDate]);
+
+    
     return (
         <DemoContainer
             sx={{ marginRight: 2 }}
@@ -55,13 +57,20 @@ const DatePickers = (
                 }}
                 label="Конец периода"
                 value={valueEnd}
-                onChange={(newValueEnd) => {
+                onChange={(newValueEnd) => { 
                     setValueEnd(newValueEnd);
                     setPeriodData({
                         ...periodData,
                         PeriodEnd: formatISO(newValueEnd),
                     });
-                }}
+                }} 
+                onError={(newError) => setErrorDate(newError)}
+                minDate={valueStart}
+                slotProps={{
+                    textField: {
+                      helperText: errorMessage,
+                    },
+                  }}
                 disableFuture
             />
         </DemoContainer>

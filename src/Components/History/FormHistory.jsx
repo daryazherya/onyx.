@@ -13,19 +13,20 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { MenuItem } from "@mui/material";
-import PostData from "../api/PostData";
+import PostData from "../fetch/PostData";
 import Preloader from "../Preloader/Preloader";
 
 const FormHistory = () => {
     const today = new Date();
+    today.setHours(0,0,0,0);
     const { channels, setChannels, preloader, setPreloader } =
         useContext(AppContext);
     const { t } = useTranslation();
     const [valueType, setValueType] = useState("20");
-    const [valueStart, setValueStart] = useState(new Date());
+    const [valueStart, setValueStart] = useState(today);
     const [valueEnd, setValueEnd] = useState(new Date());
     const [formDataHistory, setFormDataHistory] = useState({
-        PeriodBegin: formatISO(today.setHours(0, 0, 0, 0)),
+        PeriodBegin: formatISO(today),
         PeriodEnd: formatISO(new Date()),
         PeriodType: "20",
         IsOnlyAverage: true,
@@ -141,7 +142,6 @@ const FormHistory = () => {
                         <InputLabel>Представления</InputLabel>
                         <Select
                             label="Представления"
-                            className="form__select"
                             onChange={handleChangeChannel}
                             value={formDataHistory.ChannelSetId}
                             sx={{
@@ -152,6 +152,7 @@ const FormHistory = () => {
                                     },
                             }}
                         >
+                            
                             {channels &&
                                 channels.map((channel) => (
                                     <MenuItem

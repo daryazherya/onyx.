@@ -1,3 +1,4 @@
+import './index.scss';
 import { useState } from "react";
 import i18n from "i18next";
 import NavPanel from "../NavPanel";
@@ -21,19 +22,20 @@ const Settings = () => {
     };
 
     return <>
-    <div className="wrapper">
+        <div className="wrapper">
             <main className="main">
                 <NavPanel width={width} setWidth={setWidth} />
-            <div className="header-settings">
+            <div className="settings">
+                <p className="settings-description">Сменить язык</p>
                 <input
                     onClick={toggleLang}
-                    className="header-settings-toggle"
+                    className="settings-toggle"
                     type="checkbox"
                 ></input>
             </div>
             </main>
         </div>
-        </>;
+    </>;
 };
 
 export default Settings;
