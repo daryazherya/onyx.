@@ -4,6 +4,7 @@
 
 $iconTable: 'table';
 $iconCards: 'cards';
+$iconGraphic: 'graphic';
 $cards: 'date','name','value', 'units', 'status';
 
     // Table start 
@@ -24,45 +25,33 @@ $cards: 'date','name','value', 'units', 'status';
 }
 
 
-@mixin table-button-switch {
-    font-size: 10px;
-    padding: 8px 25px;
-    border: 0.5px solid rgb(151, 151, 151);
-    background-color: rgb(228, 227, 232);
-    box-shadow: 0px 1px 6px rgb(74, 74, 74);
-    background-repeat: no-repeat;
-    background-position: center;
-}
+// @mixin table-button-switch-active {
+//     background-color: #6a6767;
+//     background-repeat: no-repeat;
+//     background-position: center;
+//     opacity: 0.8;
+// }
 
-@mixin table-button-switch-active {
-    background: #9f9f9f;
-    background-repeat: no-repeat;
-    background-position: center;
-    opacity: 0.8;
-}
-
+// .left-active {
+//     // @include table-button-switch-active;
+//     // background-image: url('../../images/icons/#{$iconTable}.svg');
+// }
 
 .table__button-switch_left {
-    @include table-button-switch;
     border-radius: 20px 0px 0px 20px;
     background-image: url('../../images/icons/#{$iconTable}.svg');
 }
 
-.left-active {
-    @include table-button-switch-active;
-    background-image: url('../../images/icons/#{$iconTable}.svg');
+
+.table__button-switch_middle {
+    border-radius: 20px 0px 0px 20px;
+    background-image: url('../../images/icons/#{$iconGraphic}.png');
 }
 
 .table__button-switch_right {
-    @include table-button-switch;
     border-radius: 0px 20px 20px 0px;
     background-image: url('../../images/icons/#{$iconCards}.svg');
     
-}
-
-.right-active {
-    @include table-button-switch-active;
-    background-image: url('../../images/icons/#{$iconCards}.svg');
 }
 
 
@@ -86,7 +75,7 @@ $cards: 'date','name','value', 'units', 'status';
 .table-indicators__table-body {
     td {
         color:rgb(65, 65, 65);
-        text-align: center;
+        text-align:start;
         padding: 8px 20px;
         border-bottom: 1px solid rgb(202, 202, 202);
     }
@@ -120,7 +109,9 @@ $cards: 'date','name','value', 'units', 'status';
     padding: 0 20px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between
+    justify-content: center;
+    
+    
 }
 .card__indicator {
     display: flex;
@@ -175,7 +166,6 @@ $cards: 'date','name','value', 'units', 'status';
     position: relative;
     display: flex;
     align-items: flex-end;
-    // align-items: stretch;
     border-radius: 60px;
     background-color: #a6a7a9;
     box-shadow: 0px 0px 5px #111;
@@ -186,18 +176,9 @@ $cards: 'date','name','value', 'units', 'status';
 .card__indicator__progress-bar {
     font-size: small;
     width: 15px;
-    // height: 60px;
 }
 
-
-
-
-
-// .card__indicator__progress-bar::before {
-//     font-size: small;
-//     position: absolute;
-//     content:'';
-//     top: 0;
-//     left: 60%;
-
-// }
+.pagination__cards {
+    margin-top: auto;
+    align-self: center;
+}

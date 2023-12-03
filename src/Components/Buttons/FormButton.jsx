@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 
 const FormButton = ({ postFormData }) => {
     return (
-        <Button 
+        <Button
             onClick={() => {
                 postFormData();
             }}

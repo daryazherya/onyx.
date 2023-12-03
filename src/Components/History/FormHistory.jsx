@@ -18,7 +18,7 @@ import Preloader from "../Preloader/Preloader";
 
 const FormHistory = () => {
     const today = new Date();
-    today.setHours(0,0,0,0);
+    today.setHours(0, 0, 0, 0);
     const { channels, setChannels, preloader, setPreloader } =
         useContext(AppContext);
     const { t } = useTranslation();
@@ -76,7 +76,8 @@ const FormHistory = () => {
                 formDataHistory
             );
 
-            if (!response.ok) {
+            // console.log(response);
+            if (response === undefined || !response.ok) {
                 setTimeout(() => {
                     setPreloader(false);
                     setError(true);
@@ -84,7 +85,6 @@ const FormHistory = () => {
                 throw Error(t("errors.tableData"));
             }
             const data = await response.json();
-            // console.log(data);
 
             setTimeout(() => {
                 setPreloader(false);
@@ -152,7 +152,6 @@ const FormHistory = () => {
                                     },
                             }}
                         >
-                            
                             {channels &&
                                 channels.map((channel) => (
                                     <MenuItem

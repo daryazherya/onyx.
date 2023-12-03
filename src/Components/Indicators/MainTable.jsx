@@ -1,5 +1,5 @@
 import "./index.scss";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import TableTitles from "./tableTitles";
 import SwitchButton from "../Buttons/SwitchButton";
 import RenderDataCards from "./RenderCards";
@@ -8,20 +8,23 @@ import { useContext } from "react";
 import { AppContext } from "../App";
 import Preloader from "../Preloader/Preloader";
 import PostData from "../fetch/PostData";
-import { InputLabel, MenuItem, Select } from "@mui/material";
+import { InputLabel, Pagination } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
+import Chart from "./Chart";
+import SelectChannels from "./SelectChannels";
 
-const MainTable = () => {
+const MainTable = memo(function MainTable() {
     const { channels, setChannels, setPreloader, preloader } =
         useContext(AppContext);
     const { t } = useTranslation();
     const [data, setData] = useState(null);
-    const [switchButton, setSwitchButton] = useState(true);
+    const [switchButton, setSwitchButton] = useState("table");
     const [error, setError] = useState(false);
     const [select, setSelect] = useState({
         Id: 1,
         Name: "Пост Дарьи.Все каналы",
     });
+    const [dataChart, setDataChart] = useState(null);
 
     useEffect(() => {
         fetch("/api/measurements/getchannelsets")
@@ -35,125 +38,128 @@ const MainTable = () => {
             .then((data) => {
                 setChannels(data);
             });
-
-        getMeasures();
+        setPreloader(true);
     }, []);
 
-    const handleChange = (newValue) => {
-        // console.log(select, newValue);
-        setSelect({
-            Id: newValue.target.value,
-            Name: newValue.target.value.Name,
+    const changeDataForChart = (dataBase) => {
+        const timeTick = new Date(dataBase[0].Time).toLocaleTimeString();
+        const obj = {};
+        obj.time = timeTick;
+
+        dataBase.forEach((substance) => {
+            obj[substance.SubstanceShortName] = substance.Value;
         });
-        getMeasures();
+        return dataChart === null ? [obj] : [...dataChart, obj];
     };
 
-    useEffect(() => {
-        async function getCurrentMeasures() {
-            try {
-                const response = await fetch("/api/measurements/getmeasurenow");
-                if (!response.ok) {
-                    setError(true);
-                    throw Error(t("errors.tableData"));
-                }
-                const dataBase = await response.json();
-                setData(dataBase);
-            } catch (err) {
-                console.log(err);
-            }
-        }
-        getCurrentMeasures();
-    }, [data]);
-
-    useEffect(() => {
-        PostData("/api/measurements/setcurrentchannelset", select);
-    }, [select]);
-
-    async function getMeasures() {
+    async function getCurrentMeasures() {
         try {
-            setPreloader(true);
             const response = await fetch("/api/measurements/getmeasurenow");
             if (!response.ok) {
                 setTimeout(() => {
                     setPreloader(false);
                     setError(true);
-                }, 1500);
+                }, 2500);
                 throw Error(t("errors.tableData"));
             }
-            const data = await response.json();
-            // console.log(select);
-            setData(data);
+            const newData = await response.json();
+            // console.log(newData);
+            if (JSON.stringify(newData) !== JSON.stringify(data)) {
+                setData(newData);
+                setDataChart(changeDataForChart(newData));
+            }
+
             setTimeout(() => {
                 setPreloader(false);
-            }, 1500);
+            }, 2500);
         } catch (err) {
             console.log(err);
         }
     }
 
+    useEffect(() => {
+        async function post() {
+            try {
+                await PostData(
+                    "/api/measurements/setcurrentchannelset",
+                    select
+                );
+                setTimeout(() => {
+                    getCurrentMeasures();
+                }, 2000);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        post();
+    }, [select]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            getCurrentMeasures();
+        }, 10000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [data]);
+
     return (
-        <>
-            <div className="table">
-                <div className="table__wrapper-settings">
-                    <FormControl
-                        sx={{
-                            minWidth: 150,
-                        }}
-                    >
-                        <InputLabel>Представления</InputLabel>
-                        <Select
-                            label="Представления"
-                            className="table__select-channels"
-                            onChange={handleChange}
-                            value={select.Id}
-                            sx={{
-                                ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
-                                    {
-                                        padding: 1.5,
-                                        paddingRight: "32px",
-                                    },
-                            }}
-                        >
-                            {channels &&
-                                channels.map((channel) => (
-                                    <MenuItem
-                                        key={channel.Id}
-                                        value={channel.Id}
-                                    >
-                                        {channel.Name}
-                                    </MenuItem>
-                                ))}
-                        </Select>
-                    </FormControl>
-                    <SwitchButton
-                        switchButton={switchButton}
-                        setSwitchButton={setSwitchButton}
-                        getMeasures={getMeasures}
+        <div className="table">
+            <div className="table__wrapper-settings">
+                <FormControl
+                    sx={{
+                        minWidth: 150,
+                    }}
+                >
+                    <InputLabel>Представления</InputLabel>
+                    <SelectChannels
+                        select={select}
+                        channels={channels}
+                        setDataChart={setDataChart}
+                        setPreloader={setPreloader}
+                        setSelect={setSelect}
+                    />
+                </FormControl>
+                <SwitchButton
+                    switchButton={switchButton}
+                    setSwitchButton={setSwitchButton}
+                    getMeasures={getCurrentMeasures}
+                    setPreloader={setPreloader}
+                />
+            </div>
+            {preloader && <Preloader />}
+            {switchButton === "table" && data && (
+                <TableTitles data={data} t={t} preloader={preloader} />
+            )}
+            {switchButton === "graphic" && (
+                <Chart dataChart={dataChart} preloader={preloader} />
+            )}
+            {switchButton === "cards" && (
+                <div className="cards-wrapper">
+                    {data && (
+                        <RenderDataCards
+                            data={data}
+                            t={t}
+                            preloader={preloader}
+                        />
+                    )}
+                </div>
+            )}
+            {error && !preloader && (
+                <div className="tableData-error">{t("errors.tableData")}</div>
+            )}
+            {switchButton === "cards" && (
+                <div className="pagination__cards">
+                    <Pagination
+                        count={data && data.length}
+                        variant="outlined"
+                        shape="rounded"
                     />
                 </div>
-                {preloader && <Preloader />}
-                {switchButton && (
-                    <TableTitles data={data} t={t} preloader={preloader} />
-                )}
-                {!switchButton && (
-                    <div className="cards-wrapper">
-                        {data && (
-                            <RenderDataCards
-                                data={data}
-                                t={t}
-                                preloader={preloader}
-                            />
-                        )}
-                    </div>
-                )}
-                {error && !preloader && (
-                    <div className="tableData-error">
-                        {t("errors.tableData")}
-                    </div>
-                )}
-            </div>
-        </>
+            )}
+        </div>
     );
-};
+});
 
 export default MainTable;

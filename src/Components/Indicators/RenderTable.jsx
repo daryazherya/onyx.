@@ -1,17 +1,22 @@
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import { styled } from '@mui/material/styles'
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import { styled } from "@mui/material/styles";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover}, 
-    '&:last-child td, &:last-child th': {
-      border: 0,
+    "&:nth-of-type(odd)": {
+        backgroundColor: theme.palette.action.hover,
+    },
+    "&:last-child td, &:last-child th": {
+        border: 0,
     },
 }));
 
-const RenderDataTable = (data) => {
-    return data.map((indicator) => {
+const RenderDataTable = (data, rowsPerPage, page) => {
+    return (
+        rowsPerPage > 0
+            ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            : data
+    ).map((indicator) => {
         return (
             <StyledTableRow key={indicator.ChannelID}>
                 <TableCell>{`${new Date(

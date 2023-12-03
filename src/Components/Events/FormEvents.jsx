@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 const FormEvents = () => {
     const today = new Date();
     const { preloader, setPreloader } = useContext(AppContext);
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const [valueStartEvent, setValueStartEvent] = useState(new Date());
     const [valueEndEvent, setValueEndEvent] = useState(new Date());
     const [formDataEvent, setFormDataEvent] = useState({
@@ -24,12 +24,14 @@ const FormEvents = () => {
     const [dataPeriodEvents, setDataPeriodEvents] = useState(null);
     const [error, setError] = useState(false);
 
-
     async function postFormData() {
         try {
-            setPreloader(true)
-            const response = await PostData("/api/measurements/GetAlertsForPeriod",formDataEvent)
-            if (!response.ok) {
+            setPreloader(true);
+            const response = await PostData(
+                "/api/measurements/GetAlertsForPeriod",
+                formDataEvent
+            );
+            if (response === undefined || !response.ok) {
                 setTimeout(() => {
                     setPreloader(false);
                     setError(true);
@@ -61,16 +63,16 @@ const FormEvents = () => {
                         valueEndEvent,
                         setValueEndEvent
                     )}
-                    <FormButton
-                        postFormData={postFormData}
-                    />
+                    <FormButton postFormData={postFormData} />
                 </LocalizationProvider>
             </form>
-            {preloader && <Preloader/>}
-            {dataPeriodEvents && <EventTable
+            {preloader && <Preloader />}
+            {dataPeriodEvents && (
+                <EventTable
                     dataPeriodEvents={dataPeriodEvents}
                     preloader={preloader}
-            />}
+                />
+            )}
             {error && !preloader && (
                 <div className="tableData-error">{t("errors.tableData")}</div>
             )}

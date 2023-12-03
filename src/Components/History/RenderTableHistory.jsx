@@ -7,8 +7,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { TablePagination } from "@mui/material";
-import { useState } from "react";
 import RenderDateAndValues from "./RenderDateAndValues";
+import { useState } from "react";
 
 const RenderTableHistory = ({ dataPeriodHistory, preloader }) => {
     const [page, setPage] = useState(0);
@@ -38,15 +38,11 @@ const RenderTableHistory = ({ dataPeriodHistory, preloader }) => {
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
             {!preloader && dataPeriodHistory && (
                 <TableContainer sx={{ maxHeight: 550, padding: 0 }}>
-                    <Table className="history-table">
+                    <Table className="history-table" stickyHeader>
                         <TableHead className="history-table__table-head">
                             <TableRow>
                                 <TableCell>Дата/время</TableCell>
-                                <RenderTableTitles
-                                    data={dataPeriodHistory}
-                                    page={page}
-                                    rowsPerPage={rowsPerPage}
-                                />
+                                <RenderTableTitles data={dataPeriodHistory} />
                             </TableRow>
                         </TableHead>
                         <TableBody className="history-table__table-body">

@@ -26,8 +26,8 @@ const RenderDateAndValues = ({ data, page, rowsPerPage }) => {
                     const date = obj[key];
                     if (i < 1) {
                         return (
-                            <StyledTableRow>
-                                <TableCell key={obj.ChannelID}>
+                            <StyledTableRow key={obj.ChannelID}>
+                                <TableCell>
                                     {`${new Date(
                                         obj[key]
                                     ).toLocaleDateString()} ${new Date(
