@@ -25,6 +25,8 @@ const MainTable = memo(function MainTable() {
         Name: "Пост Дарьи.Все каналы",
     });
     const [dataChart, setDataChart] = useState(null);
+    const [page, setPage] = useState(0);
+    const numberCards = 6;
 
     useEffect(() => {
         fetch("/api/measurements/getchannelsets")
@@ -50,6 +52,11 @@ const MainTable = memo(function MainTable() {
             obj[substance.SubstanceShortName] = substance.Value;
         });
         return dataChart === null ? [obj] : [...dataChart, obj];
+    };
+
+    const handleChange = (event, value) => {
+        console.log(value, "<<<");
+        setPage(value);
     };
 
     async function getCurrentMeasures() {
@@ -142,6 +149,8 @@ const MainTable = memo(function MainTable() {
                             data={data}
                             t={t}
                             preloader={preloader}
+                            numberCards={numberCards}
+                            page={page}
                         />
                     )}
                 </div>
@@ -152,7 +161,9 @@ const MainTable = memo(function MainTable() {
             {switchButton === "cards" && (
                 <div className="pagination__cards">
                     <Pagination
-                        count={data && data.length}
+                        count={data && Math.round(data.length / numberCards)}
+                        page={page}
+                        onChange={handleChange}
                         variant="outlined"
                         shape="rounded"
                     />

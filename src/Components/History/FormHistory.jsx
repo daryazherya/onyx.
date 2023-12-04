@@ -128,10 +128,26 @@ const FormHistory = () => {
                                     },
                             }}
                         >
-                            <MenuItem value="20">20-минутный</MenuItem>
-                            <MenuItem value="H">Часовой</MenuItem>
-                            <MenuItem value="D">Дневной</MenuItem>
-                            <MenuItem value="M">Месячный</MenuItem>
+                            <MenuItem value="20">20 минут</MenuItem>
+                            <MenuItem value="H">Час</MenuItem>
+                            <MenuItem
+                                value="D"
+                                disabled={
+                                    valueStart.toLocaleDateString() ===
+                                    valueEnd.toLocaleDateString()
+                                }
+                            >
+                                День
+                            </MenuItem>
+                            <MenuItem
+                                value="M"
+                                disabled={
+                                    valueStart.toLocaleDateString() ===
+                                    valueEnd.toLocaleDateString()
+                                }
+                            >
+                                Месяц
+                            </MenuItem>
                         </Select>
                     </FormControl>
                     <FormControl

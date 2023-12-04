@@ -7,7 +7,7 @@ const SwitchButton = ({ setSwitchButton, getMeasures, setPreloader }) => {
             sx={{
                 ".MuiButtonGroup-grouped": {
                     fontSize: "10px",
-                    padding: "8px 20px",
+                    padding: "8px 10px",
                     border: "0.5px solid rgb(151, 151, 151)",
                     backgroundColor: "rgb(228, 227, 232)",
                     boxShadow: "0px 1px 6px rgb(74, 74, 74)",
