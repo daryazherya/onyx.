@@ -7,9 +7,10 @@ import { Paper } from "@mui/material";
 import RenderTableTitles from "./RenderTableTitles";
 import RenderTableDataEvents from "./RenderTableDataEvents";
 
-const EventTable = ({ dataPeriodEvents }) => {
+const EventTable = ({ dataPeriodEvents, preloader }) => {
     return (
-        dataPeriodEvents && (
+        dataPeriodEvents &&
+        !preloader && (
             <Paper sx={{ width: "100%", overflow: "hidden" }}>
                 <TableContainer sx={{ maxHeight: 550, padding: 0 }}>
                     <Table className="events-table" stickyHeader>
@@ -24,18 +25,6 @@ const EventTable = ({ dataPeriodEvents }) => {
                             />
                         </TableBody>
                     </Table>
-                    {/* <TablePagination
-                    rowsPerPageOptions={[10, 15]}
-                    component="div"
-                    count={
-                        dataPeriodEvents &&
-                        dataPeriodEvents[0].Value.length
-                    }
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                /> */}
                 </TableContainer>
             </Paper>
         )

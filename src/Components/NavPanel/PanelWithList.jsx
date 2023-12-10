@@ -2,13 +2,9 @@ import { useTranslation } from "react-i18next";
 import "./index.scss";
 import RenderList from "./RenderList";
 import RenderEmptyList from "./RenderEmpyList";
-import { Link } from "react-router-dom";
 import PanelButton from "../Buttons/PanelButton";
 
-
-const PanelWithList = ({ width,setWidth}) => {
-
-
+const PanelWithList = ({ width, setWidth }) => {
     const { t } = useTranslation();
     const listNames = [
         { indicators: t("navPanel.indicatorsTitle") },
@@ -18,9 +14,8 @@ const PanelWithList = ({ width,setWidth}) => {
         { documents: t("navPanel.documentsTitle") },
         { settings: t("navPanel.settingsTitle") },
         { dataBase: t("navPanel.dataBaseTitle") },
-        { about: t("navPanel.about") }
+        { about: t("navPanel.about") },
     ];
-
 
     return (
         <section className="leftPanel-direction">
@@ -29,7 +24,7 @@ const PanelWithList = ({ width,setWidth}) => {
                     ? RenderEmptyList(listNames)
                     : RenderList(listNames)}
             </ul>
-            <PanelButton  width={width} setWidth={setWidth}/>
+            <PanelButton />
         </section>
     );
 };

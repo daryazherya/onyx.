@@ -1,7 +1,11 @@
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { Button } from "@mui/material";
+// import { setPreloader } from "../../store/slices/preload";
+import { useDispatch } from "react-redux";
+import { setSwitchButton } from "../../store/slices/switchButton";
 
-const SwitchButton = ({ setSwitchButton, getMeasures, setPreloader }) => {
+const SwitchButton = ({ getMeasures }) => {
+    const dispatch = useDispatch();
     return (
         <ButtonGroup
             sx={{
@@ -18,29 +22,26 @@ const SwitchButton = ({ setSwitchButton, getMeasures, setPreloader }) => {
         >
             <Button
                 onClick={() => {
-                    setSwitchButton("table");
-                    setPreloader(true);
+                    dispatch(setSwitchButton("table"));
+                    // dispatch(setPreloader(true));
                     getMeasures();
                 }}
-                href="#/indicators"
                 className="table__button-switch_left"
             ></Button>
             <Button
                 onClick={() => {
-                    setSwitchButton("graphic");
-                    setPreloader(true);
+                    dispatch(setSwitchButton("graphic"));
+                    // dispatch(setPreloader(true));
                     getMeasures();
                 }}
-                href="#/indicators"
                 className="table__button-switch_middle"
             ></Button>
             <Button
                 onClick={() => {
-                    setSwitchButton("cards");
-                    setPreloader(true);
+                    dispatch(setSwitchButton("cards"));
+                    // dispatch(setPreloader(true));
                     getMeasures();
                 }}
-                href="#/indicators"
                 className="table__button-switch_right"
             ></Button>
         </ButtonGroup>

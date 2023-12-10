@@ -1,11 +1,14 @@
 import "./index.scss";
 import { Resizable } from "re-resizable";
 import PanelWithList from "./PanelWithList";
-import { useContext, useState } from "react";
-import { AppContext } from "../App";
+import { useState } from "react";
 import Header from "../Header";
+import { useDispatch, useSelector } from "react-redux";
+import { setWidth } from "../../store/slices/widthNav";
+
 const NavPanel = () => {
-    const { width, setWidth } = useContext(AppContext);
+    const width = useSelector((state) => state.widthNav.width);
+    const dispatch = useDispatch();
     const [mousePos, setMousePos] = useState({});
     const handleMouseMove = (event) => setMousePos({ x: event.clientX });
 
@@ -16,11 +19,11 @@ const NavPanel = () => {
             size={{ width }}
             onResize={(e) => {
                 handleMouseMove(e);
-                setWidth(mousePos.x);
+                dispatch(setWidth(mousePos.x));
             }}
         >
-            <Header/>
-            <PanelWithList width={width} setWidth={setWidth}/>
+            <Header />
+            <PanelWithList />
         </Resizable>
     );
 };

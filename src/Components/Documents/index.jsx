@@ -2,20 +2,18 @@ import "./index.scss";
 import NavPanel from "../NavPanel";
 import { formatISO } from "date-fns";
 import DatePickers from "../DatePickers/DatePickers";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { ru } from "date-fns/locale";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import FormButton from "../Buttons/FormButton";
 import SelectChannels from "../Indicators/SelectChannels";
-import { AppContext } from "../App";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { useSelector } from "react-redux";
 
 const Documents = () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const { channels, setChannels, preloader, setPreloader } =
-        useContext(AppContext);
     const [valueType, setValueType] = useState("20");
     const [valueStart, setValueStart] = useState(today);
     const [valueEnd, setValueEnd] = useState(new Date());
@@ -65,14 +63,14 @@ const Documents = () => {
                                 <MenuItem value="M">Месяц</MenuItem>
                             </Select>
                         </FormControl>
-                        {/* <FormControl
+                        <FormControl
                             sx={{
                                 minWidth: 150,
                             }}
-                        > */}
-                        {/* <InputLabel>Представления</InputLabel> */}
-                        {/* <SelectChannels channels={channels} /> */}
-                        {/* </FormControl> */}
+                        >
+                            <InputLabel>Представления</InputLabel>
+                            <SelectChannels />
+                        </FormControl>
                         <FormControl
                             sx={{
                                 minWidth: 150,

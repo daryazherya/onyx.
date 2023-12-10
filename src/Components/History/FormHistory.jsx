@@ -4,8 +4,6 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import ru from "date-fns/locale/ru";
 import { formatISO } from "date-fns";
 import FormButton from "../Buttons/FormButton";
-import { useContext } from "react";
-import { AppContext } from "../App";
 import { useTranslation } from "react-i18next";
 import RenderTableHistory from "./RenderTableHistory";
 import DatePickers from "../DatePickers/DatePickers";
@@ -15,13 +13,17 @@ import Select from "@mui/material/Select";
 import { MenuItem } from "@mui/material";
 import PostData from "../fetch/PostData";
 import Preloader from "../Preloader/Preloader";
+import { useDispatch, useSelector } from "react-redux";
+import { setChannels } from "../../store/slices/getData";
+import { setPreloader } from "../../store/slices/preload";
 
 const FormHistory = () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const { channels, setChannels, preloader, setPreloader } =
-        useContext(AppContext);
     const { t } = useTranslation();
+    const preloader = useSelector((state) => state.preload.preloader);
+    const channels = useSelector((state) => state.getData.channels);
+    const dispatch = useDispatch();
     const [valueType, setValueType] = useState("20");
     const [valueStart, setValueStart] = useState(today);
     const [valueEnd, setValueEnd] = useState(new Date());
@@ -76,7 +78,6 @@ const FormHistory = () => {
                 formDataHistory
             );
 
-            // console.log(response);
             if (response === undefined || !response.ok) {
                 setTimeout(() => {
                     setPreloader(false);

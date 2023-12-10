@@ -8,8 +8,13 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { memo, useState } from "react";
 import { TablePagination } from "@mui/material";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
-const TableTitles = memo(function TableTitles({ data, t, preloader }) {
+const TableTitles = memo(function TableTitles() {
+    const data = useSelector((state) => state.getData.data);
+    const preloader = useSelector((state) => state.preload.preloader);
+    const { t } = useTranslation();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 

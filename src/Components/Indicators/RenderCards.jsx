@@ -1,4 +1,11 @@
-const RenderDataCards = ({ data, t, preloader, numberCards, page }) => {
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+
+const RenderDataCards = ({ numberCards, page }) => {
+    const data = useSelector((state) => state.getData.data);
+    const preloader = useSelector((state) => state.preload.preloader);
+    const { t } = useTranslation();
+
     const calculatePercents = (value, pdk) => {
         if (!value || !pdk) {
             return "Нет ПДК";
@@ -16,11 +23,13 @@ const RenderDataCards = ({ data, t, preloader, numberCards, page }) => {
             return result.toFixed();
         }
     };
-    console.log(page);
 
     return (
         page > 0
-            ? data.slice((page - 1) * numberCards, (page - 1) * numberCards + numberCards)
+            ? data.slice(
+                  (page - 1) * numberCards,
+                  (page - 1) * numberCards + numberCards
+              )
             : data.slice(0, numberCards)
     ).map((indicator) => {
         return (

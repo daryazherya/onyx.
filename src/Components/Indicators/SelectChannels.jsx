@@ -1,20 +1,25 @@
 import { MenuItem, Select } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { setDataChart } from "../../store/slices/getData";
+import { setPreloader } from "../../store/slices/preload";
+import { setSelect } from "../../store/slices/selects";
 
-const SelectChannels = ({
-    channels,
-    select,
-    setDataChart,
-    setPreloader,
-    setSelect,
-}) => {
+const SelectChannels = () => {
+    const channels = useSelector((state) => state.getData.channels);
+    const select = useSelector((state) => state.selectName.select);
+    const dispatch = useDispatch();
+
     const handleChange = (newValue, e) => {
-        setSelect({
-            Id: newValue.target.value,
-            Name: e.props.children,
-        });
-        setPreloader(true);
-        setDataChart(null);
+        dispatch(
+            setSelect({
+                Id: newValue.target.value,
+                Name: e.props.children,
+            })
+        );
+        dispatch(setPreloader(true));
+        dispatch(setDataChart(null));
     };
+
     return (
         <Select
             label="Представления"

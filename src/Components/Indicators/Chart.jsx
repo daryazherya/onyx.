@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import {
     LineChart,
     Line,
@@ -9,7 +10,7 @@ import {
     ResponsiveContainer,
 } from "recharts";
 
-const Chart = ({ dataChart, preloader }) => {
+const Chart = () => {
     const colors = [
         "#FF0000",
         "#00FF00",
@@ -37,6 +38,8 @@ const Chart = ({ dataChart, preloader }) => {
         "#D2691E",
         "#FFFFF0",
     ];
+    const dataChart = useSelector((state) => state.getData.dataChart);
+    const preloader = useSelector((state) => state.preload.preloader);
 
     return (
         !preloader &&

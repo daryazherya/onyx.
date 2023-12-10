@@ -1,20 +1,22 @@
 import DatePickers from "../DatePickers/DatePickers";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import formatISO from "date-fns/formatISO";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import ru from "date-fns/locale/ru";
 import FormButton from "../Buttons/FormButton";
 import EventTable from "./EventTable";
-import { AppContext } from "../App";
 import PostData from "../fetch/PostData";
 import Preloader from "../Preloader/Preloader";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { setPreloader } from "../../store/slices/preload";
 
 const FormEvents = () => {
     const today = new Date();
-    const { preloader, setPreloader } = useContext(AppContext);
+    const dispatch = useDispatch();
     const { t } = useTranslation();
+    const preloader = useSelector((state) => state.preload.preloader);
     const [valueStartEvent, setValueStartEvent] = useState(new Date());
     const [valueEndEvent, setValueEndEvent] = useState(new Date());
     const [formDataEvent, setFormDataEvent] = useState({
@@ -26,21 +28,21 @@ const FormEvents = () => {
 
     async function postFormData() {
         try {
-            setPreloader(true);
+            dispatch(setPreloader(true));
             const response = await PostData(
                 "/api/measurements/GetAlertsForPeriod",
                 formDataEvent
             );
             if (response === undefined || !response.ok) {
                 setTimeout(() => {
-                    setPreloader(false);
+                    dispatch(setPreloader(false));
                     setError(true);
                 }, 1500);
                 throw Error("Нет данных за период");
             }
             const data = await response.json();
             setTimeout(() => {
-                setPreloader(false);
+                dispatch(setPreloader(false));
                 setDataPeriodEvents(data);
             }, 1400);
         } catch (err) {

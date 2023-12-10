@@ -4,27 +4,27 @@ import TableTitles from "./tableTitles";
 import SwitchButton from "../Buttons/SwitchButton";
 import RenderDataCards from "./RenderCards";
 import { useTranslation } from "react-i18next";
-import { useContext } from "react";
-import { AppContext } from "../App";
 import Preloader from "../Preloader/Preloader";
 import PostData from "../fetch/PostData";
 import { InputLabel, Pagination } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import Chart from "./Chart";
 import SelectChannels from "./SelectChannels";
+import { useDispatch, useSelector } from "react-redux";
+import { setData, setChannels, setDataChart } from "../../store/slices/getData";
+import { setPreloader } from "../../store/slices/preload";
 
 const MainTable = memo(function MainTable() {
-    const { channels, setChannels, setPreloader, preloader } =
-        useContext(AppContext);
     const { t } = useTranslation();
-    const [data, setData] = useState(null);
-    const [switchButton, setSwitchButton] = useState("table");
+    const dispatch = useDispatch();
+    const data = useSelector((state) => state.getData.data);
+    const dataChart = useSelector((state) => state.getData.dataChart);
+    const preloader = useSelector((state) => state.preload.preloader);
+    const select = useSelector((state) => state.selectName.select);
+    const switchButton = useSelector(
+        (state) => state.switchButton.switchButton
+    );
     const [error, setError] = useState(false);
-    const [select, setSelect] = useState({
-        Id: 1,
-        Name: "Пост Дарьи.Все каналы",
-    });
-    const [dataChart, setDataChart] = useState(null);
     const [page, setPage] = useState(0);
     const numberCards = 6;
 
@@ -38,9 +38,9 @@ const MainTable = memo(function MainTable() {
                 return res.json();
             })
             .then((data) => {
-                setChannels(data);
+                dispatch(setChannels(data));
             });
-        setPreloader(true);
+        dispatch(setPreloader(true));
     }, []);
 
     const changeDataForChart = (dataBase) => {
@@ -55,7 +55,6 @@ const MainTable = memo(function MainTable() {
     };
 
     const handleChange = (event, value) => {
-        console.log(value, "<<<");
         setPage(value);
     };
 
@@ -64,21 +63,23 @@ const MainTable = memo(function MainTable() {
             const response = await fetch("/api/measurements/getmeasurenow");
             if (!response.ok) {
                 setTimeout(() => {
-                    setPreloader(false);
+                    dispatch(setPreloader(false));
                     setError(true);
                 }, 2500);
                 throw Error(t("errors.tableData"));
             }
             const newData = await response.json();
-            // console.log(newData);
+
             if (JSON.stringify(newData) !== JSON.stringify(data)) {
-                setData(newData);
-                setDataChart(changeDataForChart(newData));
+                dispatch(setData(newData));
+                dispatch(setDataChart(changeDataForChart(newData)));
             }
 
-            setTimeout(() => {
-                setPreloader(false);
-            }, 2500);
+            if (preloader) {
+                setTimeout(() => {
+                    dispatch(setPreloader(false));
+                }, 2500);
+            }
         } catch (err) {
             console.log(err);
         }
@@ -120,35 +121,17 @@ const MainTable = memo(function MainTable() {
                     }}
                 >
                     <InputLabel>Представления</InputLabel>
-                    <SelectChannels
-                        select={select}
-                        channels={channels}
-                        setDataChart={setDataChart}
-                        setPreloader={setPreloader}
-                        setSelect={setSelect}
-                    />
+                    <SelectChannels />
                 </FormControl>
-                <SwitchButton
-                    switchButton={switchButton}
-                    setSwitchButton={setSwitchButton}
-                    getMeasures={getCurrentMeasures}
-                    setPreloader={setPreloader}
-                />
+                <SwitchButton getMeasures={getCurrentMeasures} />
             </div>
             {preloader && <Preloader />}
-            {switchButton === "table" && data && (
-                <TableTitles data={data} t={t} preloader={preloader} />
-            )}
-            {switchButton === "graphic" && (
-                <Chart dataChart={dataChart} preloader={preloader} />
-            )}
+            {switchButton === "table" && data && <TableTitles />}
+            {switchButton === "graphic" && <Chart />}
             {switchButton === "cards" && (
                 <div className="cards-wrapper">
                     {data && (
                         <RenderDataCards
-                            data={data}
-                            t={t}
-                            preloader={preloader}
                             numberCards={numberCards}
                             page={page}
                         />
