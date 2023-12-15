@@ -2,6 +2,7 @@ import RenderTableCell from "./RenderTableCell";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
+import { useSelector } from "react-redux";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -12,8 +13,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-const RenderDateAndValues = ({ data, page, rowsPerPage }) => {
-    return data.map((substance, i) =>
+const RenderDateAndValues = ({ page, rowsPerPage }) => {
+    const dataPeriodHistory = useSelector(
+        (state) => state.getData.dataPeriodHistory
+    );
+    return dataPeriodHistory.map((substance, i) =>
         (rowsPerPage > 0
             ? substance.Value.slice(
                   page * rowsPerPage,
@@ -35,7 +39,6 @@ const RenderDateAndValues = ({ data, page, rowsPerPage }) => {
                                     ).toLocaleTimeString()}`}
                                 </TableCell>
                                 <RenderTableCell
-                                    data={data}
                                     date={date}
                                     page={page}
                                     rowsPerPage={rowsPerPage}

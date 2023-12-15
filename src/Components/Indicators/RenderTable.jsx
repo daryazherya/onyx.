@@ -1,6 +1,7 @@
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
+import { useSelector } from "react-redux";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -11,7 +12,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-const RenderDataTable = (data, rowsPerPage, page) => {
+const RenderDataTable = ({ rowsPerPage, page }) => {
+    const data = useSelector((state) => state.getData.data);
+
     return (
         rowsPerPage > 0
             ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

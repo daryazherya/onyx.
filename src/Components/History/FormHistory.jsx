@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import ru from "date-fns/locale/ru";
-import { formatISO } from "date-fns";
 import FormButton from "../Buttons/FormButton";
 import { useTranslation } from "react-i18next";
 import RenderTableHistory from "./RenderTableHistory";
@@ -14,28 +13,28 @@ import { MenuItem } from "@mui/material";
 import PostData from "../fetch/PostData";
 import Preloader from "../Preloader/Preloader";
 import { useDispatch, useSelector } from "react-redux";
-import { setChannels } from "../../store/slices/getData";
+import { setChannels, setDataPeriodHistory } from "../../store/slices/getData";
 import { setPreloader } from "../../store/slices/preload";
+import { setValueType, setChannelSet } from "../../store/slices/FormData";
 
 const FormHistory = () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const menuItems = ["20", "H", "D", "M"];
     const { t } = useTranslation();
+    const dispatch = useDispatch();
     const preloader = useSelector((state) => state.preload.preloader);
     const channels = useSelector((state) => state.getData.channels);
-    const dispatch = useDispatch();
-    const [valueType, setValueType] = useState("20");
-    const [valueStart, setValueStart] = useState(today);
-    const [valueEnd, setValueEnd] = useState(new Date());
-    const [formDataHistory, setFormDataHistory] = useState({
-        PeriodBegin: formatISO(today),
-        PeriodEnd: formatISO(new Date()),
-        PeriodType: "20",
-        IsOnlyAverage: true,
-        ChannelSetId: 1,
-    });
-    const [dataPeriodHistory, setDataPeriodHistory] = useState(null);
-    const [error, setError] = useState(false);
+    const dataPeriodHistory = useSelector(
+        (state) => state.getData.dataPeriodHistory
+    );
+    const valueType = useSelector((state) => state.formData.valueType);
+    const valueStart = new Date(
+        useSelector((state) => state.formData.valueStart)
+    );
+    const valueEnd = new Date(useSelector((state) => state.formData.valueEnd));
+    const formDataHistory = useSelector(
+        (state) => state.formData.formDataHistory
+    );
+    const [errorHistory, setErrorHistory] = useState(false);
 
     useEffect(() => {
         async function getChannelSets() {
@@ -47,7 +46,7 @@ const FormHistory = () => {
                     throw Error(t("errors.channels"));
                 }
                 const data = await response.json();
-                setChannels(data);
+                dispatch(setChannels(data));
             } catch (err) {
                 console.log(err);
             }
@@ -56,23 +55,16 @@ const FormHistory = () => {
     }, []);
 
     const handleChange = (event) => {
-        setValueType(event.target.value);
-        setFormDataHistory({
-            ...formDataHistory,
-            PeriodType: event.target.value,
-        });
+        dispatch(setValueType(event.target.value));
     };
 
     const handleChangeChannel = (event) => {
-        setFormDataHistory({
-            ...formDataHistory,
-            ChannelSetId: event.target.value,
-        });
+        dispatch(setChannelSet(event.target.value));
     };
 
     async function postFormData() {
         try {
-            setPreloader(true);
+            dispatch(setPreloader(true));
             const response = await PostData(
                 "/api/measurements/GetDataForPeriod",
                 formDataHistory
@@ -80,16 +72,16 @@ const FormHistory = () => {
 
             if (response === undefined || !response.ok) {
                 setTimeout(() => {
-                    setPreloader(false);
-                    setError(true);
+                    dispatch(setPreloader(false));
+                    setErrorHistory(true);
                 }, 1500);
                 throw Error(t("errors.tableData"));
             }
             const data = await response.json();
 
             setTimeout(() => {
-                setPreloader(false);
-                setDataPeriodHistory(data);
+                dispatch(setPreloader(false));
+                dispatch(setDataPeriodHistory(data));
             }, 1500);
         } catch (err) {
             console.log(err);
@@ -103,14 +95,7 @@ const FormHistory = () => {
                     dateAdapter={AdapterDateFns}
                     adapterLocale={ru}
                 >
-                    {DatePickers(
-                        formDataHistory,
-                        setFormDataHistory,
-                        valueStart,
-                        setValueStart,
-                        valueEnd,
-                        setValueEnd
-                    )}
+                    <DatePickers />
                     <FormControl
                         sx={{
                             minWidth: 150,
@@ -120,7 +105,11 @@ const FormHistory = () => {
                         <InputLabel>Тип усреднений</InputLabel>
                         <Select
                             label="Тип усреднений"
-                            value={valueType}
+                            value={
+                                menuItems.find((type) => valueType === type)
+                                    ? valueType
+                                    : ""
+                            }
                             onChange={handleChange}
                             sx={{
                                 ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
@@ -160,7 +149,16 @@ const FormHistory = () => {
                         <Select
                             label="Представления"
                             onChange={handleChangeChannel}
-                            value={formDataHistory.ChannelSetId}
+                            value={
+                                channels &&
+                                channels.find(
+                                    (channel) =>
+                                        channel.Id ===
+                                        formDataHistory.ChannelSetId
+                                )
+                                    ? formDataHistory.ChannelSetId
+                                    : ""
+                            }
                             sx={{
                                 ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
                                     {
@@ -184,13 +182,8 @@ const FormHistory = () => {
                 </LocalizationProvider>
             </form>
             {preloader && <Preloader />}
-            {dataPeriodHistory && (
-                <RenderTableHistory
-                    dataPeriodHistory={dataPeriodHistory}
-                    preloader={preloader}
-                />
-            )}
-            {error && !preloader && (
+            {dataPeriodHistory && <RenderTableHistory />}
+            {errorHistory && !preloader && (
                 <div className="tableData-error">{t("errors.tableData")}</div>
             )}
         </>

@@ -15,26 +15,31 @@ const TableTitles = memo(function TableTitles() {
     const data = useSelector((state) => state.getData.data);
     const preloader = useSelector((state) => state.preload.preloader);
     const { t } = useTranslation();
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [pageForIndicator, setPageForIndicator] = useState(0);
+    const [rowsPerPageIndicator, setRowsPerPageIndicator] = useState(5);
 
     const handleChangePage = (event, newPage) => {
-        setPage(newPage);
+        setPageForIndicator(newPage);
     };
 
     const handleChangeRowsPerPage = (event) => {
-        console.log(event.target.value);
-        setRowsPerPage(parseInt(event.target.value, 5));
-        setPage(0);
+        // console.log(event.target.value);
+        setRowsPerPageIndicator(parseInt(event.target.value, 5));
+        setPageForIndicator(0);
     };
 
     const emptyRows =
-        page > 0
-            ? Math.max(0, (1 + page) * rowsPerPage - (data ? data.length : 0))
+        pageForIndicator > 0
+            ? Math.max(
+                  0,
+                  (1 + pageForIndicator) * rowsPerPageIndicator -
+                      (data ? data.length : 0)
+              )
             : 0;
 
     return (
-        !preloader && (
+        !preloader &&
+        data && (
             <TableContainer component={Paper}>
                 <Table className="table-indicators" stickyHeader>
                     <TableHead className="table-indicators__table-head">
@@ -63,7 +68,10 @@ const TableTitles = memo(function TableTitles() {
                         </TableRow>
                     </TableHead>
                     <TableBody className="table-indicators__table-body">
-                        {data && RenderDataTable(data, rowsPerPage, page)}
+                        <RenderDataTable
+                            rowsPerPage={rowsPerPageIndicator}
+                            page={pageForIndicator}
+                        />
                         {emptyRows > 0 && (
                             <TableRow style={{ height: 56.5 * emptyRows }}>
                                 <TableCell colSpan={6} />
@@ -85,8 +93,8 @@ const TableTitles = memo(function TableTitles() {
                     }}
                     component="div"
                     count={data && data.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
+                    rowsPerPage={rowsPerPageIndicator}
+                    page={pageForIndicator}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />

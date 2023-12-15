@@ -1,21 +1,21 @@
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { formatISO } from "date-fns";
-import {  useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setValueStart, setValueEnd } from "../../store/slices/FormData";
 
-const DatePickers = (
-    periodData,
-    setPeriodData,
-    valueStart,
-    setValueStart,
-    valueEnd,
-    setValueEnd
-) => {
+const DatePickers = () => {
+    const dispatch = useDispatch();
+    const valueStart = new Date(
+        useSelector((state) => state.formData.valueStart)
+    );
+    const valueEnd = new Date(useSelector((state) => state.formData.valueEnd));
+    const [errorDate, setErrorDate] = useState(null);
+    const errorMessage = useMemo(
+        () => (errorDate === "minDate" ? "Выберите другую дату" : ""),
+        [errorDate]
+    );
 
-    const [errorDate, setErrorDate] = useState(null); 
-    const errorMessage = useMemo(() =>  errorDate === 'minDate' ? 'Выберите другую дату': '', [errorDate]);
-
-    
     return (
         <DemoContainer
             sx={{ marginRight: 2 }}
@@ -34,13 +34,7 @@ const DatePickers = (
                 label="Начало периода"
                 value={valueStart}
                 onChange={(newValueStart) => {
-                    setValueStart(newValueStart);
-                    setPeriodData({
-                        ...periodData,
-                        PeriodBegin: formatISO(
-                            newValueStart.setHours(0, 0, 0, 0)
-                        ),
-                    });
+                    dispatch(setValueStart(newValueStart.toString()));
                 }}
                 disableFuture
             />
@@ -57,20 +51,16 @@ const DatePickers = (
                 }}
                 label="Конец периода"
                 value={valueEnd}
-                onChange={(newValueEnd) => { 
-                    setValueEnd(newValueEnd);
-                    setPeriodData({
-                        ...periodData,
-                        PeriodEnd: formatISO(newValueEnd),
-                    });
-                }} 
+                onChange={(newValueEnd) => {
+                    dispatch(setValueEnd(newValueEnd.toString()));
+                }}
                 onError={(newError) => setErrorDate(newError)}
                 minDate={valueStart}
                 slotProps={{
                     textField: {
-                      helperText: errorMessage,
+                        helperText: errorMessage,
                     },
-                  }}
+                }}
                 disableFuture
             />
         </DemoContainer>

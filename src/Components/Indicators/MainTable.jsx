@@ -13,6 +13,7 @@ import SelectChannels from "./SelectChannels";
 import { useDispatch, useSelector } from "react-redux";
 import { setData, setChannels, setDataChart } from "../../store/slices/getData";
 import { setPreloader } from "../../store/slices/preload";
+import { setErrorIndicator } from "../../store/slices/errors";
 
 const MainTable = memo(function MainTable() {
     const { t } = useTranslation();
@@ -24,23 +25,32 @@ const MainTable = memo(function MainTable() {
     const switchButton = useSelector(
         (state) => state.switchButton.switchButton
     );
-    const [error, setError] = useState(false);
-    const [page, setPage] = useState(0);
+    const errorIndicator = useSelector(
+        (state) => state.errorMessage.errorIndicator
+    );
+    const [pageCards, setPageCards] = useState(0);
     const numberCards = 6;
+    console.log(data);
 
     useEffect(() => {
-        fetch("/api/measurements/getchannelsets")
-            .then((res) => {
-                if (!res.ok) {
-                    setError(true);
+        async function getChannelSets() {
+            try {
+                const response = await fetch(
+                    "/api/measurements/getchannelsets"
+                );
+                if (!response.ok) {
+                    dispatch(setErrorIndicator(true));
                     throw Error(t("errors.channels"));
                 }
-                return res.json();
-            })
-            .then((data) => {
+                const data = await response.json();
+
                 dispatch(setChannels(data));
-            });
-        dispatch(setPreloader(true));
+                dispatch(setPreloader(true));
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        getChannelSets();
     }, []);
 
     const changeDataForChart = (dataBase) => {
@@ -55,7 +65,7 @@ const MainTable = memo(function MainTable() {
     };
 
     const handleChange = (event, value) => {
-        setPage(value);
+        setPageCards(value);
     };
 
     async function getCurrentMeasures() {
@@ -64,7 +74,7 @@ const MainTable = memo(function MainTable() {
             if (!response.ok) {
                 setTimeout(() => {
                     dispatch(setPreloader(false));
-                    setError(true);
+                    dispatch(setErrorIndicator(true));
                 }, 2500);
                 throw Error(t("errors.tableData"));
             }
@@ -73,12 +83,7 @@ const MainTable = memo(function MainTable() {
             if (JSON.stringify(newData) !== JSON.stringify(data)) {
                 dispatch(setData(newData));
                 dispatch(setDataChart(changeDataForChart(newData)));
-            }
-
-            if (preloader) {
-                setTimeout(() => {
-                    dispatch(setPreloader(false));
-                }, 2500);
+                dispatch(setPreloader(false));
             }
         } catch (err) {
             console.log(err);
@@ -126,31 +131,34 @@ const MainTable = memo(function MainTable() {
                 <SwitchButton getMeasures={getCurrentMeasures} />
             </div>
             {preloader && <Preloader />}
-            {switchButton === "table" && data && <TableTitles />}
+            {switchButton === "table" && <TableTitles />}
             {switchButton === "graphic" && <Chart />}
             {switchButton === "cards" && (
-                <div className="cards-wrapper">
-                    {data && (
+                <>
+                    <div className="cards-wrapper">
                         <RenderDataCards
                             numberCards={numberCards}
-                            page={page}
+                            page={pageCards}
                         />
+                    </div>
+                    {data && (
+                        <div className="pagination__cards">
+                            <Pagination
+                                count={
+                                    data &&
+                                    Math.round(data.length / numberCards)
+                                }
+                                page={pageCards}
+                                onChange={handleChange}
+                                variant="outlined"
+                                shape="rounded"
+                            />
+                        </div>
                     )}
-                </div>
+                </>
             )}
-            {error && !preloader && (
+            {errorIndicator && !preloader && (
                 <div className="tableData-error">{t("errors.tableData")}</div>
-            )}
-            {switchButton === "cards" && (
-                <div className="pagination__cards">
-                    <Pagination
-                        count={data && Math.round(data.length / numberCards)}
-                        page={page}
-                        onChange={handleChange}
-                        variant="outlined"
-                        shape="rounded"
-                    />
-                </div>
             )}
         </div>
     );

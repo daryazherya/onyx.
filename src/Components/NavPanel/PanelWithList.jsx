@@ -3,9 +3,13 @@ import "./index.scss";
 import RenderList from "./RenderList";
 import RenderEmptyList from "./RenderEmpyList";
 import PanelButton from "../Buttons/PanelButton";
+import { useSelector } from "react-redux";
 
-const PanelWithList = ({ width, setWidth }) => {
+const PanelWithList = () => {
+    const width = useSelector((state) => state.widthNav.width);
+
     const { t } = useTranslation();
+
     const listNames = [
         { indicators: t("navPanel.indicatorsTitle") },
         { map: t("navPanel.mapTitle") },

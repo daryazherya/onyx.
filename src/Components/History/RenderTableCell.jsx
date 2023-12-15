@@ -1,7 +1,12 @@
 import TableCell from "@mui/material/TableCell";
+import { useSelector } from "react-redux";
 
-const RenderTableCell = ({ data, date, page, rowsPerPage }) => {
-    return data.map((substance) =>
+const RenderTableCell = ({ date, page, rowsPerPage }) => {
+    const dataPeriodHistory = useSelector(
+        (state) => state.getData.dataPeriodHistory
+    );
+
+    return dataPeriodHistory.map((substance) =>
         (rowsPerPage > 0
             ? substance.Value.slice(
                   page * rowsPerPage,

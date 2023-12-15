@@ -9,7 +9,7 @@ export const widthNav = createSlice({
   initialState,
   reducers: {
     setWidth: (state, action) => {
-        state.wisth = action.payload;
+        state.width = action.payload;
     },
 
   }

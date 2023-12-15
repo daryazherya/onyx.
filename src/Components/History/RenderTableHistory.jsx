@@ -9,25 +9,35 @@ import Paper from "@mui/material/Paper";
 import { TablePagination } from "@mui/material";
 import RenderDateAndValues from "./RenderDateAndValues";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
-const RenderTableHistory = ({ dataPeriodHistory, preloader }) => {
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+const RenderTableHistory = () => {
+    const preloader = useSelector((state) => state.preload.preloader);
+    const dataPeriodHistory = useSelector(
+        (state) => state.getData.dataPeriodHistory
+    );
+
+    const [pageHistoryTable, setPageHistoryTable] = useState(0);
+    const [rowsPerPageHistoryTable, setRowsPerPageHistoryTable] = useState(10);
 
     const handleChangePage = (event, newPage) => {
-        setPage(newPage);
+        setPageHistoryTable(newPage);
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+        setRowsPerPageHistoryTable(parseInt(event.target.value, 10));
+        setPageHistoryTable(0);
     };
 
+    if (dataPeriodHistory.length === 0) {
+        return <div> Данные за выбранный период пока не сформированы</div>;
+    }
+
     const emptyRows =
-        page > 0
+        pageHistoryTable > 0
             ? Math.max(
                   0,
-                  (1 + page) * rowsPerPage -
+                  (1 + pageHistoryTable) * rowsPerPageHistoryTable -
                       (dataPeriodHistory
                           ? dataPeriodHistory[0].Value.length
                           : 0)
@@ -42,14 +52,13 @@ const RenderTableHistory = ({ dataPeriodHistory, preloader }) => {
                         <TableHead className="history-table__table-head">
                             <TableRow>
                                 <TableCell>Дата/время</TableCell>
-                                <RenderTableTitles data={dataPeriodHistory} />
+                                <RenderTableTitles />
                             </TableRow>
                         </TableHead>
                         <TableBody className="history-table__table-body">
                             <RenderDateAndValues
-                                data={dataPeriodHistory}
-                                page={page}
-                                rowsPerPage={rowsPerPage}
+                                page={pageHistoryTable}
+                                rowsPerPage={rowsPerPageHistoryTable}
                             />
                             {emptyRows > 0 && (
                                 <TableRow style={{ height: 38 * emptyRows }}>
@@ -75,8 +84,8 @@ const RenderTableHistory = ({ dataPeriodHistory, preloader }) => {
                             dataPeriodHistory &&
                             dataPeriodHistory[0].Value.length
                         }
-                        rowsPerPage={rowsPerPage}
-                        page={page}
+                        rowsPerPage={rowsPerPageHistoryTable}
+                        page={pageHistoryTable}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
